@@ -1,0 +1,199 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+
+/* ===== BULK PURCHASE CONTAINER (RESPONSIVE) ===== */
+
+.container {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+/* Title */
+.container h1 {
+  font-size: clamp(28px, 6vw, 48px);
+  font-weight: 500;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+/* Form layout */
+.bulk-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Two inputs row */
+.row {
+  display: flex;
+  gap: 16px;
+}
+
+/* Inputs */
+input,
+textarea {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: clamp(14px, 3.5vw, 16px);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Textarea */
+textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+/* Button */
+button {
+  width: 160px;
+  padding: 14px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: opacity 0.3s ease;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+/* ===== TABLET & MOBILE ===== */
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
+
+  button {
+    width: 100%;
+    align-self: center;
+  }
+}
+
+/* ===== SMALL PHONES ===== */
+@media (max-width: 480px) {
+  .container {
+    margin: 40px auto;
+  }
+}
+
+
+
+
+
+/* Hamburger Icon                         >>>>>>>>>>>*/
+.hamburger {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  margin-right: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+  transition: right 0.4s ease;
+  z-index: 1001;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.sidebar.active {
+  right: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.close-sidebar {
+  font-size: 28px;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.3s;
+}
+
+.close-sidebar:hover {
+  color: #e20074;
+}
+
+.sidebar-links {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-links li {
+  margin-bottom: 15px;
+}
+
+.sidebar-links a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.sidebar-links a:hover {
+  color: #e20074;
+}
+
+/* Show hamburger on mobile */       
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+  }
+}
+
+/* 1. Bigger icon */
+.search-btn i {
+  font-size: 18px;          /* was 14 px */
+}
+
+/* 2. Slightly larger circle */
+.search-btn {
+  width: 40px;
+  height: 40px;
+  right: 6px;               /* keep it centred */
+}
+
+/* 3. White icon on pink button (already done, just emphasise) */
+.search-btn {
+  background: #e20074;
+}
+.search-btn i { color: #fff; }
+
+/* ENDddddddddddddddddddddddddddddddddddd */

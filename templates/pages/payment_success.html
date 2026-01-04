@@ -1,0 +1,503 @@
+{% extends "base.html" %} {% load static %} {% block title %}Payment Successful
+- Family BookStore{% endblock %} {% block content %}
+<div
+  class="payment-success-container"
+  style="max-width: 800px; margin: 40px auto; padding: 20px"
+>
+  <div class="success-header" style="text-align: center; margin-bottom: 30px">
+    <div
+      class="success-icon"
+      style="font-size: 60px; color: #10b981; margin-bottom: 20px"
+    >
+    </div>
+    <h1 style="color: #10b981; margin-bottom: 10px">Payment Successful!</h1>
+    <p style="color: #666">
+      Your order has been confirmed and is being processed.
+    </p>
+  </div>
+
+  <div
+    class="order-details"
+    style="
+      background: #f9fafb;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    "
+  >
+    <h2 style="margin-bottom: 15px; color: #333">Order Details</h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px">
+      <div><strong>Order ID:</strong> #{{ order.id }}</div>
+      <div>
+        <strong>Order Date:</strong> {{ order.created_at|date:"d M Y" }}
+      </div>
+      <div><strong>Email:</strong> {{ order.email }}</div>
+      <div><strong>Total Amount:</strong> ₹{{ order.total }}</div>
+    </div>
+  </div>
+
+  <div
+    class="shipping-info"
+    style="
+      background: #f9fafb;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    "
+  >
+    <h2 style="margin-bottom: 15px; color: #333">Shipping Information</h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px">
+      <div>
+        <strong>Delivery Address:</strong><br />
+        {{ order.full_name }}<br />
+        {{ order.address }}<br />
+        {{ order.city }}, {{ order.state }} - {{ order.pin_code }}
+      </div>
+      <div>
+        <strong>Delivery Type:</strong> {{ order.delivery_type }}<br />
+        <strong>Estimated Delivery:</strong> 3-6 business days
+      </div>
+    </div>
+  </div>
+
+  {% if shiprocket_order_id %}
+  <div
+    class="shiprocket-info"
+    style="
+      background: #e0f2fe;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border-left: 4px solid #0288d1;
+    "
+  >
+    <h2 style="margin-bottom: 15px; color: #0277bd">
+      <i class="fas fa-shipping-fast"></i> Shipping Status
+    </h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px">
+      <div><strong>Shiprocket Order ID:</strong> {{ shiprocket_order_id }}</div>
+      <div><strong>Status:</strong> {{ shiprocket_status }}</div>
+      {% if order.awb_number %}
+      <div><strong>AWB Number:</strong> {{ order.awb_number }}</div>
+      <div><strong>Courier:</strong> {{ order.courier_name }}</div>
+      {% endif %}
+    </div>
+
+    <!--NEW: Items with SKU mapping -->
+    <div style="margin-top: 20px">
+      <h3 style="margin-bottom: 15px; color: #333">
+        Order Items with Shiprocket SKUs
+      </h3>
+      <div style="overflow-x: auto">
+        <table
+          style="
+            width: 100%;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+          "
+        >
+          <thead>
+            <tr style="background: #0288d1; color: white">
+              <th
+                style="padding: 10px; text-align: left; border: 1px solid #ddd"
+              >
+                Book Title
+              </th>
+              <th
+                style="padding: 10px; text-align: left; border: 1px solid #ddd"
+              >
+                Book ID
+              </th>
+              <th
+                style="padding: 10px; text-align: left; border: 1px solid #ddd"
+              >
+                Shiprocket SKU
+              </th>
+              <th
+                style="padding: 10px; text-align: left; border: 1px solid #ddd"
+              >
+                Quantity
+              </th>
+              <th
+                style="padding: 10px; text-align: left; border: 1px solid #ddd"
+              >
+                Status
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in order.items.all %}
+            <tr style="border-bottom: 1px solid #eee">
+              <td style="padding: 10px; border: 1px solid #ddd">
+                {{ item.title }}
+              </td>
+              <td style="padding: 10px; border: 1px solid #ddd">
+                {{ item.item_id }}
+              </td>
+              <td
+                style="
+                  padding: 10px;
+                  border: 1px solid #ddd;
+                  font-family: monospace;
+                  font-size: 12px;
+                "
+              >
+                {% if item.shiprocket_sku %}
+                <span
+                  style="
+                    background: #f0f0f0;
+                    padding: 2px 6px;
+                    border-radius: 3px;
+                  "
+                  >{{ item.shiprocket_sku }}</span
+                >
+                {% else %}
+                <span style="color: #999">Processing...</span>
+                {% endif %}
+              </td>
+              <td style="padding: 10px; border: 1px solid #ddd">
+                {{ item.quantity }}
+              </td>
+              <td style="padding: 10px; border: 1px solid #ddd">
+                <span style="color: #10b981; font-weight: 500"
+                  >{{ order.shiprocket_status|default:"Pending" }}</span
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    {% if order.awb_number %}
+    <a
+      href="https://shiprocket.co/tracking/{{ order.awb_number }}"
+      target="_blank"
+      class="btn"
+      style="
+        background: #0288d1;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        display: inline-block;
+        margin-top: 15px;
+      "
+    >
+      <i class="fas fa-external-link-alt mr-2"></i>Track on Shiprocket
+    </a>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <div
+    class="next-steps"
+    style="
+      background: #fff3e0;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    "
+  >
+    <h2 style="margin-bottom: 15px; color: #f57c00">What's Next?</h2>
+    <ul style="list-style: none; padding: 0">
+      <li style="margin-bottom: 10px">
+        <i
+          class="fas fa-check-circle"
+          style="color: #10b981; margin-right: 8px"
+        ></i>
+        You will receive an order confirmation email shortly
+      </li>
+      <li style="margin-bottom: 10px">
+        <i class="fas fa-truck" style="color: #0288d1; margin-right: 8px"></i>
+        We'll send tracking information once your order ships
+      </li>
+      <li style="margin-bottom: 10px">
+        <i class="fas fa-phone" style="color: #f57c00; margin-right: 8px"></i>
+        For any queries, contact us at support@familybookstore.com
+      </li>
+    </ul>
+  </div>
+
+  <div class="action-buttons" style="text-align: center; margin-top: 30px">
+    <a
+      href="/"
+      class="btn"
+      style="
+        background: #e20074;
+        color: white;
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-right: 10px;
+      "
+    >
+      Continue Shopping
+    </a>
+    <a
+      href="/order-tracking/?order_id={{ order.id }}"
+      class="btn"
+      style="
+        background: #0288d1;
+        color: white;
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 5px;
+      "
+    >
+      Track Order
+    </a>
+  </div>
+</div>
+
+<style>
+  .payment-success-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .success-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .success-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+  }
+
+  .success-header h1 {
+    margin-bottom: 10px;
+    font-size: 1.9rem;
+  }
+
+  .success-header p {
+    color: #666;
+    font-size: 0.98rem;
+  }
+
+  .order-details,
+  .shipping-info,
+  .shiprocket-info,
+  .next-steps {
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  .order-details {
+    background: #f9fafb;
+  }
+
+  .shipping-info {
+    background: #f9fafb;
+  }
+
+  .shiprocket-info {
+    background: #e0f2fe;
+    border-left: 4px solid #0288d1;
+  }
+
+  .next-steps {
+    background: #fff3e0;
+  }
+
+  .order-details h2,
+  .shipping-info h2,
+  .shiprocket-info h2,
+  .next-steps h2 {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+  }
+
+  /* Generic grid wrapper inside blocks */
+  .order-details > div[style*="display: grid"],
+  .shipping-info > div[style*="display: grid"],
+  .shiprocket-info > div[style*="display: grid"] {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+
+  .next-steps ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .next-steps li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    font-size: 0.95rem;
+    color: #374151;
+  }
+
+  .next-steps li i {
+    margin-right: 8px;
+    margin-top: 2px;
+  }
+
+  .action-buttons {
+    text-align: center;
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .action-buttons .btn {
+    background: #e20074;
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    display: inline-block;
+  }
+
+  .action-buttons .btn:nth-child(2) {
+    /* second button can have different color, but inline style will still win if present */
+    background: #0288d1;
+  }
+
+  .btn:hover {
+    opacity: 0.9;
+    transition: opacity 0.2s;
+  }
+
+  /* --------- RESPONSIVE BREAKPOINTS --------- */
+
+  /* Tablets and below */
+  @media (max-width: 900px) {
+    .payment-success-container {
+      margin: 24px auto;
+      padding: 16px;
+    }
+
+    .success-header h1 {
+      font-size: 1.6rem;
+    }
+  }
+
+  /* Mobiles */
+  @media (max-width: 600px) {
+    .payment-success-container {
+      margin: 20px auto;
+      padding: 12px;
+    }
+
+    .success-header {
+      margin-bottom: 22px;
+    }
+
+    .success-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .success-header h1 {
+      font-size: 1.4rem;
+    }
+
+    .success-header p {
+      font-size: 0.9rem;
+    }
+
+    /* Collapse 2-column detail grids to 1 column */
+    .order-details > div[style*="grid-template-columns"],
+    .shipping-info > div[style*="grid-template-columns"],
+    .shiprocket-info > div[style*="grid-template-columns"] {
+      grid-template-columns: 1fr !important;
+      gap: 10px !important;
+    }
+
+    .order-details,
+    .shipping-info,
+    .shiprocket-info,
+    .next-steps {
+      padding: 14px !important;
+      margin-bottom: 14px !important;
+    }
+
+    .next-steps li {
+      font-size: 0.9rem;
+    }
+
+    .action-buttons {
+      flex-direction: column;
+      align-items: stretch;
+      text-align: center !important;
+      margin-top: 20px !important;
+    }
+
+    .action-buttons .btn {
+      width: 100%;
+      padding: 10px 0 !important;
+    }
+  }
+
+  /* Small phones */
+  @media (max-width: 400px) {
+    .success-header h1 {
+      font-size: 1.25rem;
+    }
+
+    .success-icon {
+      font-size: 42px;
+    }
+  }
+</style>
+
+<script>
+  // Ensure cart is cleared even if user navigates here directly or hits back button
+  document.addEventListener("DOMContentLoaded", function () {
+    // Clear cart session
+    fetch("/cart/clear/", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    }).catch(console.error);
+
+    // Also clear any payment-related session data as an extra safety measure
+    fetch("/api/clear-payment-session/", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+        "Content-Type": "application/json",
+      },
+    }).catch(console.error);
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    // Prevent back button to payment pages
+    if (window.history && window.history.pushState) {
+      window.history.pushState(null, null, window.location.href);
+      window.onpopstate = function () {
+        window.history.pushState(null, null, window.location.href);
+      };
+    }
+  });
+</script>
+{% endblock %}

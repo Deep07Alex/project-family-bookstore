@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>{% block title %}Family BookStore{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css  "
+    />
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <!-- Cart Sidebar (must be here for all pages) -->
+    <div class="overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+      <div class="cart-header">
+        <h2>Shopping Cart (<span id="cartCount">0</span>)</h2>
+        <span class="close-btn" id="closeCartBtn">&times;</span>
+      </div>
+      <div class="cart-items" id="cartItems">
+        <p class="empty-cart">Your cart is empty</p>
+      </div>
+      <div class="cart-footer" id="cartFooter" style="display: none">
+        <div class="cart-total">
+          <span>Total:</span>
+          <span id="cartTotal">₹0.00</span>
+        </div>
+        <button class="checkout-btn">Proceed to Checkout</button>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <nav class="navbar">
+        <!-- Hamburger Menu -->
+        <div class="hamburger" id="hamburger">
+          <i class="fa fa-bars"></i>
+        </div>
+        <div class="nav-logo">
+          <div class="logo"></div>
+        </div>
+        <div class="nav-links">
+          <a href="#" class="active" id="homeLink">Home</a>
+          <a href="#">Product Categories</a>
+          <a href="#">Bulk Purchase</a>
+          <a href="#">About Us</a>
+          <a href="#">Return & Replacement</a>
+          <a href="#">Contact Us</a>
+          {% comment %} <a href="#">Terms & Conditions</a>
+          <a href="#">Privacy Policy</a> {% endcomment %}
+        </div>
+        <div class="nav-icons">
+          <div class="search-container">
+            <input
+              type="text"
+              class="search-input"
+              placeholder="Search books..."
+              id="searchInput"
+            />
+            <div class="search-btn" id="searchBtn">
+              <i class="fa fa-search"></i>
+            </div>
+            <div id="searchDropdown" class="search-dropdown"></div>
+          </div>
+          <div class="cart-icon-container" id="cartIcon">
+            <i class="fa fa-shopping-cart"></i>
+            <span class="cart-count" id="cartCountBadge" style="display: none"
+              >0</span
+            >
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Right-Side Slider -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3>Menu</h3>
+        <span class="close-sidebar" id="closeSidebar">&times;</span>
+      </div>
+      <ul class="sidebar-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/productcatagory/">Product Categories</a></li>
+        <li><a href="/bulkpurchase/">Bulk Purchase</a></li>
+        <li><a href="/aboutus/">About Us</a></li>
+        <li><a href="/return/">Return & Replacement</a></li>
+        <li><a href="/contactinformation/">Contact Us</a></li>
+      </ul>
+    </div>
+    <!-- Main Content -->
+    <main>{% block content %}{% endblock %}</main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>Follow us on Social Media</h3>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/919831741349" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/aboutus/">About Us</a></li>
+            <li><a href="/contactinformation/">Contact Us</a></li>
+            <li><a href="#">Bulk Purchase</a></li>
+            <li><a href="#">Return & Replacement</a></li>
+          </ul>
+        </div>
+        <div class="footer-section about">
+          <h3>About the Shop</h3>
+          <p>
+            We’re a family-run bookstore offering the best deals on your
+            favorite titles.
+          </p>
+          <img
+            src="{% static 'images/logo.png' %}"
+            alt="Family BookStore Logo"
+            class="footer-logo"
+          />
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025, Family Book Store</p>
+        <div class="payment-icons">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png  "
+            alt="Visa"
+          />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png  "
+            alt="MasterCard"
+          />
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/cart.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,144 @@
+{%load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - Family Bookstore</title>
+    <!-- Font-Awesome 6 CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="{%static 'css/Aboutus.css'%}" />
+    <link rel="stylesheet" href="{%static 'css/style.css'%}" />
+  </head>
+  <body>
+    <header>
+      <div class="navbar">
+        <!-- Hamburger Menu -->
+        <div class="hamburger" id="hamburger">
+          <i class="fa fa-bars"></i>
+        </div>
+        <!-- Logo -->
+        <div class="nav-logo">
+          <div class="logo"></div>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="nav-links">
+          <a href="#" class="active">Home</a>
+          <a href="#">Product Categories</a>
+          <a href="#">Bulk Purchase</a>
+          <a href="#">About Us</a>
+          <a href="#">Return & Replacement</a>
+          <a href="#">Contact Us</a>
+          {% comment %} <a href="#">Terms & Conditions</a>
+          <a href="#">Privacy Policy</a> {% endcomment %}
+        </div>
+
+        <!-- Icons -->
+        {% comment %}
+        <div class="nav-icons">
+          <i class="fa fa-search"></i>
+          <i class="fa fa-bag-shopping"></i>
+        </div>
+        {% endcomment %}
+      </div>
+    </header>
+
+    <main>
+      <div class="canvas">
+        <div class="heading">
+          <h1>About Us</h1>
+        </div>
+
+        <div class="para">
+          <p>
+            Welcome to <b>Family Bookstore</b>, your ultimate online destination
+            for book lovers! We are passionate about connecting readers with a
+            diverse selection of titles across all genres, from bestsellers to
+            hidden gems. Our mission is to inspire a love for reading by
+            providing a curated collection that caters to every taste.
+          </p>
+        </div>
+
+        <div class="para second">
+          <p>
+            At Family Bookstore, we believe in the power of stories to enrich
+            lives. With fast shipping, exceptional customer service, and a
+            user-friendly shopping experience, we strive to make your
+            book-buying journey enjoyable and effortless. Join our community of
+            readers and discover your next great read today!
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <!-- Social Media -->
+        <div class="footer-section">
+          <h3>Follow us on our Social Media</h3>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/919831741349" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Bulk Purchase</a></li>
+            <li><a href="#">Return & Replacement</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+
+        <!-- About the Shop -->
+        <div class="footer-section about">
+          <h3>About the shop</h3>
+          <p>We’re a family-run bookstore offering the best deals on your
+            favorite titles.</p>
+          <img src="logo.png" alt="" class="footer-logo" />
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2025, Family Book Store</p>
+        <div class="payment-icons">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png"
+            alt="Visa"
+          />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png"
+            alt="MasterCard"
+          />
+        </div>
+      </div>
+    </footer>
+
+    <!-- Right-Side Slider -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3>Menu</h3>
+        <span class="close-sidebar" id="closeSidebar">&times;</span>
+      </div>
+      <ul class="sidebar-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/productcatagory/">Product Categories</a></li>
+        <li><a href="/bulkpurchase/">Bulk Purchase</a></li>
+        <li><a href="/aboutus/">About Us</a></li>
+        <li><a href="/return/">Return & Replacement</a></li>
+        <li><a href="/contactinformation/">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <script src="{%static 'js/script.js'%}"></script>
+  </body>
+</html>

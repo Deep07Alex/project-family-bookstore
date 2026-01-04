@@ -1,0 +1,181 @@
+/* RESET */
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.nav-links a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #333;
+}
+
+.nav-links .active {
+    color: #007bff;
+    font-weight: bold;
+}
+
+/* SEARCH */
+.search-container {
+    position: relative;
+}
+
+.search-input {
+    padding: 8px 12px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+}
+
+.search-btn {
+    position: absolute;
+    right: 8px;
+    top: 6px;
+    cursor: pointer;
+}
+
+/* CART ICON */
+.cart-icon-container {
+    margin-left: 20px;
+    position: relative;
+    cursor: pointer;
+}
+
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background: red;
+    color: white;
+    padding: 2px 7px;
+    font-size: 11px;
+    border-radius: 50%;
+}
+
+/* CART SIDEBAR */
+.cart-sidebar {
+    position: fixed;
+    right: -350px;
+    top: 0;
+    width: 350px;
+    height: 100%;
+    background: #fff;
+    box-shadow: -4px 0 6px rgba(0,0,0,0.1);
+    transition: 0.4s;
+    padding: 20px;
+    z-index: 999;
+}
+
+.cart-sidebar.active {
+    right: 0;
+}
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    left: 0;
+    top: 0;
+    display: none;
+    z-index: 998;
+}
+
+.overlay.active {
+    display: block;
+}
+
+.footer {
+    margin-top: 50px;
+    background: #222;
+    color: #fff;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+
+
+
+/* =========================
+   MOBILE RESPONSIVE FIXES
+   ========================= */
+@media (max-width: 768px) {
+
+  /* NAVBAR */
+  .navbar {
+    padding: 12px 15px;
+  }
+
+  .nav-links {
+    display: none; /* hide links on mobile */
+  }
+
+  .hamburger {
+    display: block;
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  .nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* SEARCH */
+  .search-input {
+    width: 140px;
+    font-size: 14px;
+  }
+
+  /* CART SIDEBAR */
+  .cart-sidebar {
+    width: 100%;
+    right: -100%;
+  }
+
+  .cart-sidebar.active {
+    right: 0;
+  }
+
+  /* CHECKOUT MAIN WRAPPER */
+  .min-h-screen {
+    padding: 10px;
+  }
+
+  /* RIGHT SUMMARY MOVES UP */
+  aside {
+    order: -1; /* move summary above form */
+    border-left: none !important;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  /* SECURE CHECKOUT BADGE */
+  .secure-mobile {
+    display: flex !important;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  .secure-desktop {
+    display: none !important;
+  }
+}

@@ -1,0 +1,267 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Family BookStore</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css    "
+    />
+
+    <style>
+      .policy-page {
+  background-color: #f7f7f7;
+  padding: 40px 15px;
+  font-family: Arial, sans-serif;
+}
+
+.policy-container {
+  max-width: 900px;
+  margin: auto;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.policy-container h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+.policy-container h2 {
+  font-size: 20px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.policy-container p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.policy-container ul,
+.policy-container ol {
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.policy-container li {
+  margin-bottom: 8px;
+  color: #555;
+  font-size: 15px;
+}
+
+.note {
+  background: #fff3cd;
+  border-left: 5px solid #ffc107;
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.contact-box {
+  background: #f1f1f1;
+  padding: 15px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.contact-box p {
+  margin-bottom: 8px;
+}
+
+@media (max-width: 600px) {
+  .policy-container {
+    padding: 20px;
+  }
+
+  .policy-container h1 {
+    font-size: 24px;
+  }
+
+  .policy-container h2 {
+    font-size: 18px;
+  }
+}
+
+    </style>
+
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <nav class="navbar">
+        <!-- Hamburger Menu -->
+        <div class="hamburger" id="hamburger">
+          <i class="fa fa-bars"></i>
+        </div>
+        <div class="nav-logo">
+          <div class="logo"></div>
+        </div>
+        <div class="nav-links">
+          <a href="#" class="active" id="homeLink">Home</a>
+          <a href="#">Product Categories</a>
+          <a href="#">Bulk Purchase</a>
+          <a href="#">About Us</a>
+          <a href="#">Return & Replacement</a>
+          <a href="#">Contact Us</a>
+          {% comment %} <a href="#">Terms & Conditions</a>
+          <a href="#">Privacy Policy</a> {% endcomment %}
+      </nav>
+    </header>
+
+    <main class="policy-page">
+  <section class="policy-container">
+    <h1>Return / Refund / Cancellation Policy</h1>
+
+    <p>
+      We want you to be completely satisfied with your purchase from
+      <strong>familybookstore Books's</strong>. If you have any questions about our
+      refund, return, and cancellation policy, please don’t hesitate to reach
+      out to us.
+    </p>
+
+    <ul>
+      <li>You have <strong>3 days</strong> to return / replace / request a refund from the date you received the item.</li>
+      <li>The item must be <strong>unused</strong> and in the same condition as received.</li>
+      <li>The item must be in its <strong>original packaging</strong>.</li>
+    </ul>
+
+    <p>
+      Customers must record an <strong>unpacking video</strong> clearly showing
+      any defect or damage. This video is mandatory for raising any return,
+      replacement, or refund request. Requests without an unpacking video will
+      not be accepted.
+    </p>
+
+    <h2>Damages Covered Under Policy</h2>
+    <ol>
+      <li>Severe spine damage causing pages to come apart</li>
+      <li>In-transit damage (minor corner bends, dents, or cover scratches are not covered)</li>
+      <li>More than 2 misprinted pages</li>
+      <li>More than 2 torn pages</li>
+      <li>More than 2 missing pages</li>
+      <li>Smudged pages making content unreadable (more than 2 pages)</li>
+    </ol>
+
+    <p class="note">
+      <strong>Note:</strong> Box sets like Harry Potter or Lord of the Rings
+      include delicate outer boxes. Damage to the outer box is not covered.
+      Partial refunds may be provided if 1–2 books have printing errors.
+      Full set replacement is only possible if all books and the box are damaged
+      during transit. Pre-loved books are not eligible for returns or replacements.
+    </p>
+
+    <h2>Refund Process</h2>
+    <ul>
+      <li>No automatic refunds are available.</li>
+      <li>Customers must contact us via WhatsApp for refunds on prepaid returned orders.</li>
+      <li>Returned items will be inspected before approval.</li>
+      <li>Refunds are initiated within <strong>1–2 days</strong> after receiving the return.</li>
+      <li>Refunds will be credited to the original payment method.</li>
+    </ul>
+
+    <h2>Exchanges</h2>
+    <p>Please contact us if you wish to exchange an item.</p>
+
+    <h2>Cancellation Policy</h2>
+    <ul>
+      <li>Orders can be cancelled within <strong>5 hours</strong> of placing the order.</li>
+      <li>Orders already shipped or in transit cannot be cancelled.</li>
+      <li>Full refund is provided for eligible cancellations.</li>
+      <li>Orders cannot be modified after placing.</li>
+      <li>Address and contact details cannot be changed after shipment.</li>
+    </ul>
+
+    <h2>Shipping & Returns</h2>
+    <p>
+      Our courier partner will pick up the return from your doorstep. We bear the
+      shipping cost for returns and replacements.
+    </p>
+
+    <h2>Contact Us</h2>
+    <div class="contact-box">
+      <p><strong>WhatsApp:</strong> 9831741349</p>
+      <p><strong>Email:</strong> cs.familybookstore@gmail.com</p>
+      <p><strong>Address:</strong> 12, N Pandav Nagar, Block B, Patparganj, East Delhi, Delhi – 110092</p>
+    </div>
+  </section>
+</main>
+
+
+    
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>Follow us on Social Media</h3>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/919831741349" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/aboutus/">About Us</a></li>
+            <li><a href="/contactinformation/">Contact Us</a></li>
+            <li><a href="#">Bulk Purchase</a></li>
+          </ul>
+        </div>
+        <div class="footer-section about">
+          <h3>About the Shop</h3>
+          <p>
+            We’re a family-run bookstore offering the best deals on your
+            favorite titles.
+          </p>
+          <img
+            src="{% static 'images/logo.png' %}"
+            alt="Family BookStore Logo"
+            class="footer-logo"
+          />
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025, Family Book Store</p>
+        <div class="payment-icons">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png     "
+            alt="Visa"
+          />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png     "
+            alt="MasterCard"
+          />
+        </div>
+      </div>
+    </footer>
+
+    <!-- Right-Side Slider -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3>Menu</h3>
+        <span class="close-sidebar" id="closeSidebar">&times;</span>
+      </div>
+      <ul class="sidebar-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/productcatagory/">Product Categories</a></li>
+        <li><a href="/bulkpurchase/">Bulk Purchase</a></li>
+        <li><a href="/aboutus/">About Us</a></li>
+        <li><a href="/return/">Return & Replacement</a></li>
+        <li><a href="/contactinformation/">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/cart.js' %}"></script>
+  </body>
+</html>

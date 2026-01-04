@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% if mode == "cod" %}
+            Placing Your Order...
+        {% else %}
+            Redirecting to PayU Payment Gateway...
+        {% endif %}
+    </title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    {% if mode == "cod" %}
+        <h1>Placing Your Order...</h1>
+        <div class="spinner"></div>
+        <p>Please wait while we confirm your COD order and create your shipment.</p>
+
+        <script>
+            setTimeout(function () {
+                window.location.href = "/payment/success/?order_id={{ order_id }}";
+            }, 2000);
+        </script>
+    {% else %}
+        <h1>Redirecting to Payment Gateway...</h1>
+        <div class="spinner"></div>
+        <p>Please wait while we redirect you to PayU for secure payment.</p>
+
+        <form id="payuForm" action="{{ payu_url }}" method="POST">
+            {% for key, value in params.items %}
+            <input type="hidden" name="{{ key }}" value="{{ value }}">
+            {% endfor %}
+        </form>
+
+        <script>
+            document.getElementById('payuForm').submit();
+        </script>
+    {% endif %}
+</body>
+</html>

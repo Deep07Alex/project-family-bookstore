@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load static %} 
+{% block title %}Track Order - Family BookStore{% endblock %}
+
+{% block content %}
+<div class="tracking-container" style="max-width: 900px; margin: 40px auto; padding: 20px;">
+  
+  {% if not order %}
+    <!-- Search Form -->
+    <div class="track-search" style="background: #f9fafb; padding: 30px; border-radius: 10px; margin-bottom: 30px;">
+      <h1 style="margin-bottom: 20px; color: #333;">Track Your Order</h1>
+      <form method="get" class="search-form">
+        <input 
+          type="text" 
+          name="order_id" 
+          placeholder="Enter your Order ID (e.g., FB12345)"
+          required
+          style="width: 70%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;"
+        >
+        <button 
+          type="submit"
+          style="width: 28%; padding: 12px; background: #e20074; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;"
+        >
+          Track Order
+        </button>
+      </form>
+    </div>
+  {% else %}
+    <!-- Order Details -->
+    <div class="order-info" style="background: #f9fafb; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+      <h2 style="color: #333; margin-bottom: 15px;">Order #{{ order.id }}</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+        <div><strong>Date:</strong> {{ order.created_at|date:"d M Y, h:i A" }}</div>
+        <div><strong>Email:</strong> {{ order.email }}</div>
+        <div><strong>Total:</strong> ₹{{ order.total }}</div>
+        <div><strong>Payment:</strong> {{ order.payment_method|upper }}</div>
+      </div>
+    </div>
+
+    <!-- Shipping Address -->
+    <div class="shipping-info" style="background: #f9fafb; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+      <h3 style="color: #333; margin-bottom: 10px;">Shipping Address</h3>
+      <p style="margin: 0; line-height: 1.6;">
+        {{ order.full_name }}<br>
+        {{ order.address }}<br>
+        {{ order.city }}, {{ order.state }} - {{ order.pin_code }}
+      </p>
+    </div>
+
+    <!-- Tracking Status -->
+    {% if order.shiprocket_order_id %}
+      <div class="tracking-status" style="background: #e0f2fe; padding: 20px; border-radius: 10px; border-left: 4px solid #0288d1;">
+        <h3 style="color: #0277bd; margin-bottom: 15px;">
+          <i class="fas fa-shipping-fast"></i> Shipping Status
+        </h3>
+        
+        <div class="status-timeline">
+          <div class="current-status" style="margin-bottom: 15px;">
+            <strong>Current Status:</strong> 
+            <span style="color: #e20074; font-weight: bold; font-size: 18px;">
+              {{ order.shiprocket_status|default:"Processing" }}
+            </span>
+          </div>
+
+          {% if order.awb_number %}
+            <div class="courier-details" style="margin-bottom: 15px;">
+              <p><strong>AWB Number:</strong> {{ order.awb_number }}</p>
+              <p><strong>Courier:</strong> {{ order.courier_name }}</p>
+              
+              <!-- Courier tracking link -->
+              <a 
+                href="https://shiprocket.co/tracking/{{ order.awb_number }}" 
+                target="_blank"
+                class="btn"
+                style="background: #e20074; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 10px;"
+              >
+                Track on Courier Website
+              </a>
+            </div>
+          {% endif %}
+
+          <!-- Tracking Timeline -->
+          {% if tracking_info and tracking_info.tracking_history %}
+            <div class="timeline" style="margin-top: 20px;">
+              <h4 style="margin-bottom: 10px;">Tracking History</h4>
+              {% for activity in tracking_info.tracking_history %}
+                <div class="timeline-item" style="padding: 10px 0; border-left: 2px solid #ddd; padding-left: 15px; margin-left: 10px;">
+                  <div style="font-weight: bold;">{{ activity.activity }}</div>
+                  <div style="color: #666; font-size: 14px;">{{ activity.date|date:"d M Y, h:i A" }}</div>
+                  <div style="color: #999; font-size: 13px;">{{ activity.location }}</div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p style="color: #666; margin-top: 15px;">
+              Tracking details will be available once the order is dispatched.
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    {% else %}
+      <div class="no-tracking" style="background: #fff3e0; padding: 20px; border-radius: 10px;">
+        <h3 style="color: #f57c00;">Order Confirmed</h3>
+        <p>Your order has been confirmed and is being processed. Tracking will be available soon.</p>
+      </div>
+    {% endif %}
+
+    <!-- Action Buttons -->
+    <div class="action-buttons" style="text-align: center; margin-top: 30px;">
+      <a href="/" class="btn" style="background: #e20074; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; margin-right: 10px;">
+        Continue Shopping
+      </a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

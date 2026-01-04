@@ -1,0 +1,333 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* Header section */
+
+/* Navbar layout */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 65px;
+  padding: 0 40px;
+  background-color: #fff;
+  border-bottom: 1px solid #eaeaea;
+}
+
+/* Logo Section */
+.nav-logo {
+  width: 50px;
+  height: 50px;
+  
+}
+
+.logo {
+  width: 100%;
+  height: 100%;
+  background-image: url('../images/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Navigation links */
+.nav-links {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+}
+
+.nav-links a {
+  color: #333;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+}
+
+.nav-links a.active {
+  border-bottom: 1px solid #000;
+}
+
+.nav-links a:hover {
+  border-bottom: 1px solid #000;
+}
+
+/* Icons section */
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.nav-icons i {
+  color: #000;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Header done */
+
+
+/* ===== MAIN SECTION (RESPONSIVE) ===== */
+
+.canvus {
+  width: 100%;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Heading */
+.contact h1 {
+  font-family: "Nunito", sans-serif;
+  font-size: clamp(24px, 5vw, 40px);
+  font-weight: 400;
+  text-align: center;
+  color: #121212;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* Mail & Address */
+.mailid,
+.address {
+  font-family: "Assistant", sans-serif;
+  font-size: clamp(14px, 3.5vw, 16px);
+  font-weight: 400;
+  color: rgba(18, 18, 18, 0.75);
+  text-align: center;
+  line-height: 1.8;
+  max-width: 600px;
+}
+
+/* Bold email highlight */
+.mailid b {
+  color: #000;
+}
+
+
+@media (max-width: 480px) {
+  .canvus {
+    padding: 30px 15px;
+  }
+}
+
+
+
+
+/* Footer section */
+
+.footer {
+  background-color: #1e222b;
+  color: #fff;
+  padding: 50px 80px 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border-bottom: 1px solid #333;
+  padding-bottom: 30px;
+}
+
+.footer-section {
+  flex: 1 1 250px;
+  margin: 20px;
+}
+
+.footer-section h3 {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-section ul li a:hover {
+  color: #fff;
+}
+
+.social-icons a {
+  color: #ccc;
+  margin-right: 15px;
+  font-size: 20px;
+  transition: color 0.3s;
+}
+
+.social-icons a:hover {
+  color: #fff;
+}
+
+.about p {
+  line-height: 1.6;
+  font-size: 14px;
+  color: #ccc;
+  margin-bottom: 20px;
+}
+
+.footer-logo {
+  width: 60px;
+  background-color: #000;
+  border-radius: 10px;
+  
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.payment-icons img {
+  width: 40px;
+  margin: 0 8px;
+  vertical-align: middle;
+  filter: brightness(0) invert(1);
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-section {
+    margin: 15px 0;
+  }
+}
+
+/* Footer Section done */
+
+
+
+/* Hamburger Icon                         >>>>>>>>>>>*/
+.hamburger {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  margin-right: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+  transition: right 0.4s ease;
+  z-index: 1001;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.sidebar.active {
+  right: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.close-sidebar {
+  font-size: 28px;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.3s;
+}
+
+.close-sidebar:hover {
+  color: #e20074;
+}
+
+.sidebar-links {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-links li {
+  margin-bottom: 15px;
+}
+
+.sidebar-links a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.sidebar-links a:hover {
+  color: #e20074;
+}
+
+/* Show hamburger on mobile */       
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+  }
+}
+
+/* 1. Bigger icon */
+.search-btn i {
+  font-size: 18px;          /* was 14 px */
+}
+
+/* 2. Slightly larger circle */
+.search-btn {
+  width: 40px;
+  height: 40px;
+  right: 6px;               /* keep it centred */
+}
+
+/* 3. White icon on pink button (already done, just emphasise) */
+.search-btn {
+  background: #e20074;
+}
+.search-btn i { color: #fff; }
+
+/* ENDddddddddddddddddddddddddddddddddddd */
+
+

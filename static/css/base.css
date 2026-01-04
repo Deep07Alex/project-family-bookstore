@@ -1,0 +1,182 @@
+/* =====================
+   GLOBAL RESET
+===================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+
+
+/* =====================
+   CART SIDEBAR
+===================== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  z-index: 1500;
+}
+
+.cart-sidebar {
+  position: fixed;
+  right: -100%;
+  top: 0;
+  width: 320px;
+  height: 100vh;
+  background: #fff;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
+  transition: right 0.3s ease;
+  z-index: 2000;
+}
+
+.cart-sidebar.active {
+  right: 0;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.cart-items {
+  padding: 15px;
+  overflow-y: auto;
+  height: calc(100vh - 160px);
+}
+
+.cart-footer {
+  padding: 15px;
+  border-top: 1px solid #eee;
+}
+
+.checkout-btn {
+  width: 100%;
+  padding: 10px;
+  background: #e20074;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* =====================
+   MAIN CONTENT
+===================== */
+main {
+  padding: 20px;
+}
+
+/* =====================
+   FOOTER
+===================== */
+.footer {
+  background: #111;
+  color: #fff;
+  padding: 40px 20px 10px;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.footer-section h3 {
+  margin-bottom: 15px;
+}
+
+.footer-section ul {
+  list-style: none;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section a {
+  color: #ccc;
+  font-size: 14px;
+}
+
+.footer-logo {
+  width: 120px;
+  margin-top: 10px;
+}
+
+.footer-bottom {
+  margin-top: 30px;
+  border-top: 1px solid #333;
+  padding-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.payment-icons img {
+  height: 30px;
+  margin-left: 10px;
+}
+
+/* =====================
+   RESPONSIVE
+===================== */
+@media (max-width: 1024px) {
+  .nav-links {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-input {
+    width: 140px;
+  }
+}
+
+
+/* search */
+/* =====================
+   MOBILE SEARCH
+===================== */
+@media (max-width: 768px) {
+  .search-container {
+    width: 100%;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 10px 40px 10px 12px;
+    font-size: 14px;
+  }
+
+  .search-btn {
+    right: 12px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .search-input {
+    font-size: 13px;
+    padding: 9px 38px 9px 10px;
+  }
+}

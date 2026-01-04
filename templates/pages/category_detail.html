@@ -1,0 +1,60 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block title %}{{ category_name }} - Family BookStore{% endblock %} 
+
+{% block content %}
+<section class="book-category-page">
+  <h2 class="section-title">{{ category_name }}</h2>
+
+  <div class="book-grid" id="bookGrid" data-category-slug="{{ category_slug }}">
+    {% for book in books %}
+    <a href="{% url 'book_detail' book.slug %}" class="book-card-link">
+      <div class="book-card">
+        <img
+          src="{{ book.image.url }}"
+          alt="{{ book.title }}"
+          onerror="this.src='{% static 'images/placeholder.png' %}'; this.onerror=null;"
+        />
+        {% if book.on_sale %}<span class="sale-tag">Sale</span>{% endif %}
+        <h3 class="book-title">{{ book.title }}</h3>
+        {% if book.old_price %}
+        <p class="price">
+          <span class="old">Rs. {{ book.old_price }}</span> Rs. {{ book.price }}
+        </p>
+        {% else %}
+        <p class="price">Rs. {{ book.price }}</p>
+        {% endif %}
+        <button
+          class="cart-btn add-to-cart-btn"
+          data-id="{{ book.id }}"
+          data-type="book"
+          data-title="{{ book.title|escape }}"
+          data-price="{{ book.price }}"
+          data-image="{{ book.image.url }}"
+        >
+          Add to cart
+        </button>
+      </div>
+    </a>
+    {% empty %}
+    <p style="text-align: center; grid-column: 1/-1">
+      No books available in this category.
+    </p>
+    {% endfor %}
+  </div>
+
+  <!-- Load More Button -->
+  {% if has_more %}
+  <div class="load-more-container" style="text-align: center; margin: 30px 0">
+    <button id="loadMoreBtn" class="view-btn" style="display: inline-block">
+      Load More 
+    </button>
+  </div>
+  {% endif %}
+</section>
+{% endblock %} 
+
+{% block extra_js %}
+<script src="{% static 'js/script.js' %}"></script>
+<script src="{% static 'js/cart.js' %}"></script>
+{% endblock %}

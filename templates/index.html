@@ -1,0 +1,602 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>Family BookStore</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css     "
+    />
+  </head>
+  <body>
+    <!-- Cart Sidebar -->
+    <div class="overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+      <div class="cart-header">
+        <h2>Shopping Cart (<span id="cartCount">0</span>)</h2>
+        <span class="close-btn" id="closeCartBtn">&times;</span>
+      </div>
+      <div class="cart-items" id="cartItems">
+        <p class="empty-cart">Your cart is empty</p>
+      </div>
+      <div class="cart-footer" id="cartFooter" style="display: none">
+        <div class="cart-total">
+          <span>Total:</span>
+          <span id="cartTotal">₹0.00</span>
+        </div>
+        <button class="checkout-btn">Proceed to Checkout</button>
+      </div>
+    </div>
+
+    <!--hero add slider-->
+    <!-- ===== ADVERTISEMENT SLIDER ===== -->
+    <div class="ad-bar">
+      <div class="ad-slides" id="adSlides">
+        <div class="ad">📚 Upto 90 % Discount on All Books</div>
+        <div class="ad">🚚 Cash On Delivery Available</div>
+        <div class="ad">🎉 Shop for ₹499 & get free delivery</div>
+      </div>
+
+      <!-- Arrows -->
+      <div class="ad-arrow left" onclick="prevAd()">❮</div>
+      <div class="ad-arrow right" onclick="nextAd()">❯</div>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <nav class="navbar">
+        <!-- Hamburger Menu -->
+        <div class="hamburger" id="hamburger">
+          <i class="fa fa-bars"></i>
+        </div>
+        <div class="nav-logo">
+          <div class="logo"></div>
+        </div>
+        <div class="nav-links">
+          <a href="#" class="active" id="homeLink">Home</a>
+          <a href="#">Product Categories</a>
+          <a href="#">Bulk Purchase</a>
+          <a href="#">About Us</a>
+          <a href="#">Return & Replacement</a>
+          <a href="#">Contact Us</a>
+          {% comment %} <a href="#">Terms & Conditions</a>
+          <a href="#">Privacy Policy</a> {% endcomment %}
+        </div>
+        <div class="nav-icons">
+          <div class="search-container">
+            <input
+              type="text"
+              class="search-input"
+              placeholder="Search books..."
+              id="searchInput"
+            />
+            <div class="search-btn" id="searchBtn">
+              <i class="fa fa-search"></i>
+            </div>
+            <div id="searchDropdown" class="search-dropdown"></div>
+          </div>
+          <div class="cart-icon-container" id="cartIcon">
+            <i class="fa fa-shopping-cart"></i>
+            <span class="cart-count" id="cartCountBadge" style="display: none"
+              >0</span
+            >
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- ================= Hero Slider ================= -->
+    <div class="slider">
+      <div class="slides" id="slides">
+        <div class="slide" id="book_offer"></div>
+
+        <a
+          href="/category/best-sellers/"
+          class="slide link-slide"
+          id="delivery_offer"
+        ></a>
+
+        <a
+          href="/category/manga-comics/"
+          class="slide link-slide"
+          id="manga_offer"
+        ></a>
+
+        <a
+          href="/category/most-read-combos/"
+          class="slide link-slide"
+          id="best_sellers_offer"
+        ></a>
+      </div>
+
+      <!-- Arrows -->
+      <div class="arrow left" onclick="prevSlide()">❮</div>
+      <div class="arrow right" onclick="nextSlide()">❯</div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination"></div>
+    </div>
+
+    <!-- Books Categories -->
+    <section class="book-categories">
+      <div class="category" onclick="location.href='/category/new-arrivals/';">
+        <img src="{% static 'images/new-arrivals.png' %}" alt="New Arrivals" />
+        <p>NEW ARRIVALS</p>
+      </div>
+      <div class="category" onclick="location.href='/category/manga-comics/';">
+        <img
+          src="{% static 'images/manga-comics.png' %}"
+          alt="Manga & Comics"
+        />
+        <p>MANGA & COMICS</p>
+      </div>
+      <div
+        class="category"
+        onclick="location.href='/category/most-read-combos/';"
+      >
+        <img
+          src="{% static 'images/most-read-combos.png' %}"
+          alt="Most Read Combos"
+        />
+        <p>MOST READ COMBOS</p>
+      </div>
+      <div
+        class="category"
+        onclick="location.href='/category/self-improvements/';"
+      >
+        <img
+          src="{% static 'images/self-improvements.png' %}"
+          alt="Self Improvements"
+        />
+        <p>SELF IMPROVEMENTS</p>
+      </div>
+      <div class="category" onclick="location.href='/category/romance-sale/';">
+        <img
+          src="{% static 'images/romance-sale.png' %}"
+          alt="Romance On Sale"
+        />
+        <p>ROMANCE ON SALE</p>
+      </div>
+      <div class="category" onclick="location.href='/category/hindi-books/';">
+        <img src="{% static 'images/hindi-books.png' %}" alt="Hindi Books" />
+        <p>HINDI BOOKS</p>
+      </div>
+      <div
+        class="category"
+        onclick="location.href='/category/business-stock-market/';"
+      >
+        <img
+          src="{% static 'images/business-stock-market.png' %}"
+          alt="Business & Stock-Market"
+        />
+        <p>BUSINESS & STOCK-MARKET</p>
+      </div>
+
+      <div class="category" onclick="location.href='/category/best-sellers/';">
+        <img src="{% static 'images/best_seller.png' %}" alt="Best Sellers" />
+        <p>BEST SELLERS</p>
+      </div>
+    </section>
+    <!-- benifit sectionsssss -->
+    <section class="benefits-section">
+      <h2>Benefits of using Family Book Store</h2>
+
+      <div class="slider-indicator">
+        <span id="current">1</span> / <span id="total">3</span>
+      </div>
+
+      <div class="benefits">
+        <!-- Fast Delivery -->
+        <div class="benefit-box">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path
+              d="M3 3h13v10h5l-2-4h-3V3H3zm1 2v6h10V5H4zm13 8a2 2 0 100 4 2 2 0 000-4zM7 15a2 2 0 100 4 2 2 0 000-4z"
+            />
+          </svg>
+          <h3>Fast Delivery</h3>
+          <p>Orders are dispatched within 2 days usually</p>
+        </div>
+
+        <!-- Easy Exchange -->
+        <div class="benefit-box">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path
+              d="M12 5V1l-5 5 5 5V7c3.3 0 6 2.7 6 6a6 6 0 01-6 6 6 6 0 01-5.65-4H4.26A8 8 0 0012 21a8 8 0 000-16z"
+            />
+          </svg>
+          <h3>Easy Exchange</h3>
+          <p>We have 3 days Replacement / Exchange Policy</p>
+        </div>
+
+        <!-- Easy Support -->
+        <div class="benefit-box">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path
+              d="M12 1a9 9 0 00-9 9v5a3 3 0 003 3h2v-7H5v-1a7 7 0 0114 0v1h-3v7h2a3 3 0 003-3v-5a9 9 0 00-9-9z"
+            />
+          </svg>
+          <h3>Easy Support</h3>
+          <p>
+            Whatsapp No: <a href="tel:+1234567890">(+91) 1234567890</a><br />
+            Email:
+            <a href="temp@gmail.com">supportfamalybookstore.com</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEW ARRIVALS -->
+    <section class="book-sale">
+      <h2 class="section-title">NEW ARRIVALS</h2>
+      <div class="book-grid">
+        {% for book in new_arrivals_books|slice:":10" %}
+        <a href="{% url 'book_detail' book.slug %}" class="book-card-link">
+          <div class="book-card">
+            <img src="{{ book.image.url }}" alt="{{ book.title }}" />
+            <h3 class="book-title">{{ book.title }}</h3>
+            <p class="price">
+              {% if book.old_price %}
+              <span class="old">Rs. {{ book.old_price }}</span>
+              {% endif %} Rs. {{ book.price }}
+            </p>
+            <button
+              class="cart-btn add-to-cart-btn"
+              data-id="{{ book.id }}"
+              data-type="book"
+              data-title="{{ book.title|escape }}"
+              data-price="{{ book.price }}"
+              data-image="{{ book.image.url }}"
+            >
+              Add to cart
+            </button>
+          </div>
+        </a>
+        {% empty %}
+        <p style="text-align: center">No books available right now.</p>
+        {% endfor %}
+      </div>
+      <div class="pagination-dots"></div>
+      <div class="view-all">
+        <button class="view-btn" id="btn1" data-category="new-arrivals">
+          View all
+        </button>
+      </div>
+    </section>
+
+    <!-- MANGA & COMICS -->
+    <section class="book-sale">
+      <h2 class="section-title">MANGA & COMICS</h2>
+      <div class="book-grid">
+        {% for book in manga_comics_books|slice:":10" %}
+        <a href="{% url 'book_detail' book.slug %}" class="book-card-link">
+          <div class="book-card">
+            <img src="{{ book.image.url }}" alt="{{ book.title }}" />
+            <h3 class="book-title">{{ book.title }}</h3>
+            <p class="price">
+              {% if book.old_price %}
+              <span class="old">Rs. {{ book.old_price }}</span>
+              {% endif %} Rs. {{ book.price }}
+            </p>
+            <button
+              class="cart-btn add-to-cart-btn"
+              data-id="{{ book.id }}"
+              data-type="book"
+              data-title="{{ book.title|escape }}"
+              data-price="{{ book.price }}"
+              data-image="{{ book.image.url }}"
+            >
+              Add to cart
+            </button>
+          </div>
+        </a>
+        {% empty %}
+        <p style="text-align: center">No books available right now.</p>
+        {% endfor %}
+      </div>
+      <div class="view-all">
+        <button class="view-btn" id="btn2" data-category="manga-comics">
+          View all
+        </button>
+      </div>
+    </section>
+
+
+    <!-- MOST READ COMBOS -->
+    <section class="book-sale">
+      <h2 class="section-title">MOST READ COMBOS</h2>
+      <div class="book-grid">
+        {% for book in most_read_combos_books|slice:":10" %}
+        <a href="{% url 'book_detail' book.slug %}" class="book-card-link">
+          <div class="book-card">
+            <img src="{{ book.image.url }}" alt="{{ book.title }}" />
+            <h3 class="book-title">{{ book.title }}</h3>
+            <p class="price">
+              {% if book.old_price %}
+              <span class="old">Rs. {{ book.old_price }}</span>
+              {% endif %} Rs. {{ book.price }}
+            </p>
+            <button
+              class="cart-btn add-to-cart-btn"
+              data-id="{{ book.id }}"
+              data-type="book"
+              data-title="{{ book.title|escape }}"
+              data-price="{{ book.price }}"
+              data-image="{{ book.image.url }}"
+            >
+              Add to cart
+            </button>
+          </div>
+        </a>
+        {% empty %}
+        <p style="text-align: center">No books available right now.</p>
+        {% endfor %}
+      </div>
+      <div class="view-all">
+        <button class="view-btn" id="btn3" data-category="most-read-combos">
+          View all
+        </button>
+      </div>
+    </section>
+
+    <!-- SELF IMPROVEMENTS -->
+    <section class="book-sale">
+      <h2 class="section-title">SELF IMPROVEMENTS</h2>
+      <div class="book-grid">
+        {% for book in self_improvements_books|slice:":10" %}
+        <a href="{% url 'book_detail' book.slug %}" class="book-card-link">
+          <div class="book-card">
+            <img src="{{ book.image.url }}" alt="{{ book.title }}" />
+            <span class="sale-tag">Sale</span>
+            <h3 class="book-title">{{ book.title }}</h3>
+            <p class="price">
+              {% if book.old_price %}
+              <span class="old">Rs. {{ book.old_price }}</span>
+              {% endif %} Rs. {{ book.price }}
+            </p>
+            <button
+              class="cart-btn add-to-cart-btn"
+              data-id="{{ book.id }}"
+              data-type="book"
+              data-title="{{ book.title|escape }}"
+              data-price="{{ book.price }}"
+              data-image="{{ book.image.url }}"
+            >
+              Add to cart
+            </button>
+          </div>
+        </a>
+        {% empty %}
+        <p style="text-align: center">No books available right now.</p>
+        {% endfor %}
+      </div>
+      <div class="view-all">
+        <button class="view-btn" id="btn4" data-category="self-improvements">
+          View all
+        </button>
+      </div>
+    </section>
+
+    <!-- ROMANCE ON SALE -->
+    <section class="book-sale">
+      <h2 class="section-title">ROMANCE ON SALE</h2>
+      <div class="book-grid">
+        {% for book in romance_sale_books|slice:":10" %}
+        <a href="{% url 'book_detail' book.slug %}" class="book-card-link">
+          <div class="book-card">
+            <img src="{{ book.image.url }}" alt="{{ book.title }}" />
+            <span class="sale-tag">Sale</span>
+            <h3 class="book-title">{{ book.title }}</h3>
+            <p class="price">
+              {% if book.old_price %}
+              <span class="old">Rs. {{ book.old_price }}</span>
+              {% endif %} Rs. {{ book.price }}
+            </p>
+            <button
+              class="cart-btn add-to-cart-btn"
+              data-id="{{ book.id }}"
+              data-type="book"
+              data-title="{{ book.title|escape }}"
+              data-price="{{ book.price }}"
+              data-image="{{ book.image.url }}"
+            >
+              Add to cart
+            </button>
+          </div>
+        </a>
+        {% empty %}
+        <p style="text-align: center">No books available right now.</p>
+        {% endfor %}
+      </div>
+      <div class="view-all">
+        <button class="view-btn" id="btn5" data-category="romance-sale">
+          View all
+        </button>
+      </div>
+    </section>
+
+    <!-- HINDI BOOKS -->
+    <section class="book-sale">
+      <h2 class="section-title">HINDI BOOKS</h2>
+      <div class="book-grid">
+        {% for book in hindi_books|slice:":10" %}
+        <a href="{% url 'book_detail' book.slug %}" class="book-card-link">
+          <div class="book-card">
+            <img src="{{ book.image.url }}" alt="{{ book.title }}" />
+            <h3 class="book-title">{{ book.title }}</h3>
+            <p class="price">
+              {% if book.old_price %}
+              <span class="old">Rs. {{ book.old_price }}</span>
+              {% endif %} Rs. {{ book.price }}
+            </p>
+            <button
+              class="cart-btn add-to-cart-btn"
+              data-id="{{ book.id }}"
+              data-type="book"
+              data-title="{{ book.title|escape }}"
+              data-price="{{ book.price }}"
+              data-image="{{ book.image.url }}"
+            >
+              Add to cart
+            </button>
+          </div>
+        </a>
+        {% empty %}
+        <p style="text-align: center">No books available right now.</p>
+        {% endfor %}
+      </div>
+      <div class="view-all">
+        <button class="view-btn" id="btn6" data-category="hindi-books">
+          View all
+        </button>
+      </div>
+    </section>
+
+    <!-- BUSINESS & STOCK-MARKET -->
+    <section class="book-sale">
+      <h2 class="section-title">BUSINESS & STOCK-MARKET</h2>
+      <div class="book-grid">
+        {% for book in business_stock_market_books|slice:":10" %}
+        <a href="{% url 'book_detail' book.slug %}" class="book-card-link">
+          <div class="book-card">
+            <img src="{{ book.image.url }}" alt="{{ book.title }}" />
+            <h3 class="book-title">{{ book.title }}</h3>
+            <p class="price">
+              {% if book.old_price %}
+              <span class="old">Rs. {{ book.old_price }}</span>
+              {% endif %} Rs. {{ book.price }}
+            </p>
+            <button
+              class="cart-btn add-to-cart-btn"
+              data-id="{{ book.id }}"
+              data-type="book"
+              data-title="{{ book.title|escape }}"
+              data-price="{{ book.price }}"
+              data-image="{{ book.image.url }}"
+            >
+              Add to cart
+            </button>
+          </div>
+        </a>
+        {% empty %}
+        <p style="text-align: center">No books available right now.</p>
+        {% endfor %}
+      </div>
+      <div class="view-all">
+        <button
+          class="view-btn"
+          id="btn7"
+          data-category="business-stock-market"
+        >
+          View all
+        </button>
+      </div>
+    </section>
+
+    <!-- MEGA COMBO -->
+    <section class="book-sale">
+      <h2 class="section-title">BEST SELLERS</h2>
+      <div class="book-grid">
+        {% for book in best_sellers_books|slice:":10" %}
+        <a href="{% url 'book_detail' book.slug %}" class="book-card-link">
+          <div class="book-card">
+            <img src="{{ book.image.url }}" alt="{{ book.title }}" />
+            <h3 class="book-title">{{ book.title }}</h3>
+            <p class="price">
+              {% if book.old_price %}
+              <span class="old">Rs. {{ book.old_price }}</span>
+              {% endif %} Rs. {{ book.price }}
+            </p>
+            <button
+              class="cart-btn add-to-cart-btn"
+              data-id="{{ book.id }}"
+              data-type="book"
+              data-title="{{ book.title|escape }}"
+              data-price="{{ book.price }}"
+              data-image="{{ book.image.url }}"
+            >
+              Add to cart
+            </button>
+          </div>
+        </a>
+        {% empty %}
+        <p style="text-align: center">No books available right now.</p>
+        {% endfor %}
+      </div>
+      <div class="view-all">
+        <button class="view-btn" id="btn8" data-category="best-sellers">
+          View all
+        </button>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>Follow us on Social Media</h3>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/919831741349" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/aboutus/">About Us</a></li>
+            <li><a href="/contactinformation/">Contact Us</a></li>
+            <li><a href="#">Bulk Purchase</a></li>
+          </ul>
+        </div>
+        <div class="footer-section about">
+          <h3>About the Shop</h3>
+          <p>
+            We’re a family-run bookstore offering the best deals on your
+            favorite titles.
+          </p>
+          <img
+            src="{% static 'images/logo.png' %}"
+            alt="Family BookStore Logo"
+            class="footer-logo"
+          />
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025, Family Book Store</p>
+        <div class="payment-icons">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png      "
+            alt="Visa"
+          />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png      "
+            alt="MasterCard"
+          />
+        </div>
+      </div>
+    </footer>
+
+    <!-- Right-Side Slider -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3>Menu</h3>
+        <span class="close-sidebar" id="closeSidebar">&times;</span>
+      </div>
+      <ul class="sidebar-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/productcatagory/">Product Categories</a></li>
+        <li><a href="/bulkpurchase/">Bulk Purchase</a></li>
+        <li><a href="/aboutus/">About Us</a></li>
+        <li><a href="/return/">Return & Replacement</a></li>
+        <li><a href="/contactinformation/">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/cart.js' %}"></script>
+  </body>
+</html>

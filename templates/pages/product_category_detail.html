@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ category_name }} - Family BookStore{% endblock %}
+
+{% block content %}
+<section class="book-category-page">
+  <h2 class="section-title">{{ category_name }}</h2>
+
+  <div class="book-grid" id="bookGrid" data-category-slug="{{ category_type }}">
+    {% for item in items %}
+    <div class="book-card">
+      <a href="{% url 'product_detail' item.slug %}" class="book-card-link">
+        <img src="{{ item.image.url }}" alt="{{ item.title }}" onerror="this.src='{% static 'images/placeholder.png' %}'; this.onerror=null;">
+        <h3 class="book-title">{{ item.title }}</h3>
+        {% if item.old_price %}
+        <p class="price"><span class="old">Rs. {{ item.old_price }}</span> Rs. {{ item.price }}</p>
+        {% else %}
+        <p class="price">Rs. {{ item.price }}</p>
+        {% endif %}
+        {% if item.on_sale %}
+        <span class="sale-tag">Sale</span>
+        {% endif %}
+      </a>
+      
+      <!-- FIX: Use item.image.url to match model field -->
+      <button 
+        class="cart-btn add-to-cart-btn" 
+        data-id="{{ item.id }}"
+        data-type="book"
+        data-title="{{ item.title|escape }}"
+        data-price="{{ item.price }}"
+        data-image="{{ item.image.url }}"
+      >
+        Add to cart
+      </button>
+    </div>
+    {% empty %}
+    <p style="text-align: center; grid-column: 1/-1;">No items available in this category.</p>
+    {% endfor %}
+  </div>
+
+  {% if has_more %}
+  <div class="load-more-container" style="text-align: center; margin: 30px 0">
+    <button id="loadMoreBtn" class="view-btn" style="display: inline-block">
+      Load More 
+    </button>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/cart.js' %}"></script>
+{% endblock %}

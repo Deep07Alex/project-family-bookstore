@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results{% if query %} for "{{ query }}"{% endif %} - Family BookStore</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+</head>
+<body>
+    <!-- Cart Sidebar -->
+    <div class="overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>Shopping Cart (<span id="cartCount">0</span>)</h2>
+            <span class="close-btn" id="closeCartBtn">&times;</span>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="empty-cart">Your cart is empty</p>
+        </div>
+        <div class="cart-footer" id="cartFooter" style="display: none;">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">₹0.00</span>
+            </div>
+            <button class="checkout-btn" onclick="window.location.href='/checkout/'">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="nav-logo">
+                <div class="logo"></div>
+            </div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/productcatagory/">Product Categories</a>
+                <a href="/aboutus/">About Us</a>
+                <a href="#">Return & Replacement</a>
+                <a href="/contactinformation/">Contact Us</a>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+            <div class="nav-icons">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search books..." id="searchInput" value="{{ query }}">
+                    <div class="search-btn" id="searchBtn">
+                        <i class="fa fa-search"></i>
+                    </div>
+                    <div id="searchDropdown" class="search-dropdown"></div>
+                </div>
+                <div class="cart-icon-container" id="cartIcon">
+                    <i class="fa fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCountBadge" style="display: none;">0</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Search Results -->
+    <section class="book-sale" style="padding-top: 40px;">
+        <h2 class="section-title">
+            {% if query %}
+                Search Results for "{{ query }}" ({{ results|length }} found)
+            {% else %}
+                Search Results
+            {% endif %}
+        </h2>
+        
+        {% if results %}
+            <div class="book-grid">
+                {% for item in results %}
+                    <a href="{% if item.slug %}{% url 'book_detail' item.slug %}{% else %}#{% endif %}" class="book-card-link">
+                        <div class="book-card">
+                            <img src="{{ item.image.url }}" alt="{{ item.title }}" />
+                            <h3 class="book-title">{{ item.title }}</h3>
+                            <p class="price">Rs. {{ item.price }}</p>
+                            <button class="cart-btn add-to-cart-btn" 
+                                    data-id="{{ item.id }}" 
+                                    data-type="{% if item.slug %}book{% else %}product{% endif %}" 
+                                    data-title="{{ item.title|escapejs }}" 
+                                    data-price="{{ item.price }}" 
+                                    data-image="{{ item.image.url }}">
+                                Add to cart
+                            </button>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="text-align: center; color: #999; padding: 40px;">
+                {% if query %}
+                    No books found matching "{{ query }}"
+                {% else %}
+                    Enter a search term to find books
+                {% endif %}
+            </p>
+        {% endif %}
+    </section>
+
+    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/cart.js' %}"></script>
+</body>
+</html>

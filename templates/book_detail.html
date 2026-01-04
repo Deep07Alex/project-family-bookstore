@@ -1,0 +1,289 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token }}" />
+    <title>{{ book.title }} | Family BookStore</title>
+
+    <link rel="stylesheet" href="{% static 'css/bookdetails.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css      "
+    />
+  </head>
+
+  <body>
+    <!-- Cart Sidebar -->
+    <div class="overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+      <div class="cart-header">
+        <h2>Shopping Cart (<span id="cartCount">0</span>)</h2>
+        <span class="close-btn" id="closeCartBtn">&times;</span>
+      </div>
+      <div class="cart-items" id="cartItems">
+        <p class="empty-cart">Your cart is empty</p>
+      </div>
+      <div class="cart-footer" id="cartFooter" style="display: none">
+        <div class="cart-total">
+          <span>Total:</span>
+          <span id="cartTotal">₹0.00</span>
+        </div>
+        <button class="checkout-btn">Proceed to Checkout</button>
+      </div>
+    </div>
+
+    <!--hero add slider-->
+    <!-- ===== ADVERTISEMENT SLIDER ===== -->
+    <div class="ad-bar">
+      <div class="ad-slides" id="adSlides">
+        <div class="ad">📚 Upto 90 % Discount on All Books</div>
+        <div class="ad">🚚 Cash On Delivery Available</div>
+        <div class="ad">🎉 Shop for ₹499 & get free delivery</div>
+      </div>
+
+      <!-- Arrows -->
+      <div class="ad-arrow left" onclick="prevAd()">❮</div>
+      <div class="ad-arrow right" onclick="nextAd()">❯</div>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <nav class="navbar">
+        <!-- Hamburger Menu -->
+        <div class="hamburger" id="hamburger">
+          <i class="fa fa-bars"></i>
+        </div>
+        <div class="nav-logo">
+          <div class="logo"></div>
+        </div>
+        <div class="nav-links">
+          <a href="#" class="active" id="homeLink">Home</a>
+          <a href="#">Product Categories</a>
+          <a href="#">Bulk Purchase</a>
+          <a href="#">About Us</a>
+          <a href="#">Return & Replacement</a>
+          <a href="#">Contact Us</a>
+          {% comment %} <a href="#">Terms & Conditions</a>
+          <a href="#">Privacy Policy</a> {% endcomment %}
+        </div>
+        <div class="nav-icons">
+          <div class="search-container">
+            <input
+              type="text"
+              class="search-input"
+              placeholder="Search books..."
+              id="searchInput"
+            />
+            <div class="search-btn" id="searchBtn">
+              <i class="fa fa-search"></i>
+            </div>
+            <div id="searchDropdown" class="search-dropdown"></div>
+          </div>
+          <div class="cart-icon-container" id="cartIcon">
+            <i class="fa fa-shopping-cart"></i>
+            <span class="cart-count" id="cartCountBadge" style="display: none"
+              >0</span
+            >
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container">
+      <!-- Left Side Image -->
+      <div class="image-box">
+        <img
+          src="{{ book.image.url }}"
+          alt="{{ book.title }}"
+          class="book-img"
+        />
+      </div>
+
+      <!-- Right Side Details -->
+      <div class="details">
+        <h1 class="title">{{ book.title }}</h1>
+
+        <div class="rating">⭐⭐⭐⭐⭐</div>
+
+        <div class="price-box">
+          ₹{{ book.price }} {% if book.old_price %}
+          <span class="old-price">₹{{ book.old_price }}</span>
+          {% endif %} {% if book.on_sale %}
+          <span class="sale-badge">Sale</span>
+          {% endif %}
+        </div>
+
+        <!-- Quantity -->
+        <div class="qty-box">
+          <button class="qty-btn" onclick="decreaseQty()">−</button>
+          <span id="qty-display">1</span>
+          <button class="qty-btn" onclick="increaseQty()">+</button>
+        </div>
+
+        <!-- Buttons -->
+        <button
+          class="add-cart add-to-cart-btn"
+          data-id="{{ book.id }}"
+          data-type="book"
+          data-title="{{ book.title|escape }}"
+          data-price="{{ book.price }}"
+          data-image="{{ book.image.url }}"
+        >
+          Add to Cart
+        </button>
+
+        <button
+          class="buy-now"
+          data-id="{{ book.id }}"
+          data-title="{{ book.title|escape }}"
+          data-price="{{ book.price }}"
+          data-image="{{ book.image.url }}"
+        >
+          BUY NOW
+        </button>
+
+        <!-- Countdown -->
+        <div class="timer-box">
+          <p><strong>Hurry up!</strong> Sale ends in:</p>
+          <div id="countdown">
+            <span id="hrs">00</span> Hrs <span id="mins">00</span> Mins
+            <span id="secs">00</span> Secs
+          </div>
+        </div>
+
+        <!-- Icons -->
+        <div class="icons-row">
+          <div class="icon-item">✔ Quality Checked</div>
+          <div class="icon-item">🔒 Secure Payments</div>
+          <div class="icon-item">🚚 COD Available</div>
+        </div>
+      </div>
+    </div>
+
+    {% comment %} ADD THIS DESCRIPTION SECTION {% endcomment %} 
+    {% if book.description %}
+    <div class="book-description">
+      <h3>About This Book</h3>
+      <p>{{ book.description|escape }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Right-Side Slider -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3>Menu</h3>
+        <span class="close-sidebar" id="closeSidebar">&times;</span>
+      </div>
+      <ul class="sidebar-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/productcatagory/">Product Categories</a></li>
+        <li><a href="/bulkpurchase/">Bulk Purchase</a></li>
+        <li><a href="/aboutus/">About Us</a></li>
+        <li><a href="/return/">Return & Replacement</a></li>
+        <li><a href="/contactinformation/">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <!-- === SUGGESTIONS SECTION - ALWAYS USE BOOK URLs === -->
+    <section class="book-sale">
+      <h2 class="section-title">You Might Also Like</h2>
+      <div class="book-grid">
+        {% for suggested_book in suggested_books %}
+        <div class="book-card">
+          <!-- ALWAYS link to homepage book_detail -->
+          <a
+            href="{% url 'book_detail' suggested_book.slug %}"
+            class="book-card-link"
+          >
+            <img
+              src="{{ suggested_book.image.url }}"
+              alt="{{ suggested_book.title }}"
+              onerror="this.src='{% static 'images/placeholder.png' %}'; this.onerror=null;"
+            />
+            {% if suggested_book.on_sale %}
+            <span class="sale-tag">Sale</span>
+            {% endif %}
+            <h3 class="book-title">{{ suggested_book.title }}</h3>
+            <p class="price">
+              {% if suggested_book.old_price %}
+              <span class="old">Rs. {{ suggested_book.old_price }}</span>
+              {% endif %} Rs. {{ suggested_book.price }}
+            </p>
+          </a>
+
+          <!-- Button outside link -->
+          <button
+            class="cart-btn add-to-cart-btn"
+            data-id="{{ suggested_book.id }}"
+            data-type="book"
+            data-title="{{ suggested_book.title|escapejs }}"
+            data-price="{{ suggested_book.price }}"
+            data-image="{{ suggested_book.image.url }}"
+          >
+            Add to cart
+          </button>
+        </div>
+        {% empty %}
+        <p style="text-align: center; grid-column: 1/-1">
+          No suggestions available right now.
+        </p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>Follow us on Social Media</h3>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/919831741349" target="_blank"
+              ><i class="fab fa-whatsapp"></i
+            ></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/aboutus/">About Us</a></li>
+            <li><a href="/contactinformation/">Contact Us</a></li>
+            <li><a href="#">Bulk Purchase</a></li>
+          </ul>
+        </div>
+        <div class="footer-section about">
+          <h3>About the Shop</h3>
+          <p>
+            We’re a family-run bookstore offering the best deals on your
+            favorite titles and curated book combos.
+          </p>
+          <img
+            src="{% static 'images/logo.png' %}"
+            alt="Family BookStore Logo"
+            class="footer-logo"
+          />
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025, Family Book Store</p>
+        <div class="payment-icons">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png      "
+            alt="Visa"
+          />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png      "
+            alt="MasterCard"
+          />
+        </div>
+      </div>
+    </footer>
+    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/cart.js' %}"></script>
+    <script src="{% static 'js/bookdetails.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,236 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bulk Purchase - Family BookStore</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <link rel="stylesheet" href="{% static 'css/bulk.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <style>
+      .message-container {
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 8px;
+        display: none;
+      }
+      .message-container.show {
+        display: block;
+      }
+      .message-success {
+        background: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+      }
+      .message-error {
+        background: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+      }
+      
+      /* Loading animation styles */
+      .btn-loading {
+        position: relative;
+        color: transparent !important;
+        pointer-events: none;
+      }
+      .btn-loading::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: 50%;
+        left: 50%;
+        margin-left: -10px;
+        margin-top: -10px;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spinner 0.8s linear infinite;
+      }
+      @keyframes spinner {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <nav class="navbar">
+        <div class="hamburger" id="hamburger">
+          <i class="fa fa-bars"></i>
+        </div>
+        <div class="nav-logo">
+          <div class="logo"></div>
+        </div>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href="/productcatagory/">Product Categories</a>
+          <a href="/bulkpurchase/" class="active">Bulk Purchase</a>
+          <a href="/aboutus/">About Us</a>
+          <a href="/return/">Return & Replacement</a>
+          <a href="/contactinformation/">Contact Us</a>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container">
+      <h1>Bulk Purchase Inquiry</h1>
+      
+      <!-- Success/Error Messages -->
+      <div id="message-container" class="message-container"></div>
+      
+      <!-- Functional Form -->
+      <form class="bulk-form" method="post" id="bulkForm">
+        {% csrf_token %}
+        <div class="row">
+          <input type="text" name="name" placeholder="Name *" required />
+          <input type="email" name="email" placeholder="Email *" required />
+        </div>
+        <input type="text" name="phone" class="full" placeholder="Phone number *" required />
+        <textarea
+          name="comment"
+          class="full"
+          placeholder="Comment (book titles, quantities, etc.) *"
+          rows="5"
+          required
+        ></textarea>
+        <button type="submit" id="submitBtn">Send Inquiry</button>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>Follow us on Social Media</h3>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/919831741349" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/aboutus/">About Us</a></li>
+            <li><a href="/contactinformation/">Contact Us</a></li>
+            <li><a href="/bulkpurchase/">Bulk Purchase</a></li>
+            <li><a href="/return/">Return & Replacement</a></li>
+            <li><a href="/privacy-policy/">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-section about">
+          <h3>About the Shop</h3>
+          <p>
+            We're a family-run bookstore offering the best deals on your
+            favorite titles.
+          </p>
+          <img
+            src="{% static 'images/logo.png' %}"
+            alt="Family BookStore Logo"
+            class="footer-logo"
+          />
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025, Family Book Store</p>
+        <div class="payment-icons">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png"
+            alt="Visa"
+          />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png"
+            alt="MasterCard"
+          />
+        </div>
+      </div>
+    </footer>
+
+    <!-- Right-Side Slider -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3>Menu</h3>
+        <span class="close-sidebar" id="closeSidebar">&times;</span>
+      </div>
+      <ul class="sidebar-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/productcatagory/">Product Categories</a></li>
+        <li><a href="/bulkpurchase/">Bulk Purchase</a></li>
+        <li><a href="/aboutus/">About Us</a></li>
+        <li><a href="/return/">Return & Replacement</a></li>
+        <li><a href="/contactinformation/">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/cart.js' %}"></script>
+    <script>
+      // AJAX Form Submission with Loading Animation
+      document.addEventListener("DOMContentLoaded", function() {
+        const form = document.getElementById("bulkForm");
+        const submitBtn = document.getElementById("submitBtn");
+        const messageContainer = document.getElementById("message-container");
+        
+        if (!form) return;
+        
+        form.addEventListener("submit", async function(e) {
+          e.preventDefault();
+          
+          // Disable button and show loading spinner
+          submitBtn.disabled = true;
+          submitBtn.classList.add("btn-loading");
+          submitBtn.dataset.originalText = submitBtn.textContent;
+          submitBtn.textContent = "Sending...";
+          
+          // Hide previous messages
+          messageContainer.classList.remove("show");
+          
+          try {
+            const formData = new FormData(form);
+            
+            const response = await fetch("{% url 'bulk_purchase' %}", {
+              method: "POST",
+              headers: {
+                "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
+              },
+              body: formData
+            });
+            
+            const data = await response.json();
+            
+            // Show message
+            messageContainer.classList.add("show");
+            if (data.success) {
+              messageContainer.className = "message-container message-success show";
+              messageContainer.innerHTML = `<i class="fas fa-check-circle mr-2"></i>${data.message}`;
+              form.reset(); // Clear form on success
+            } else {
+              messageContainer.className = "message-container message-error show";
+              messageContainer.innerHTML = `<i class="fas fa-exclamation-circle mr-2"></i>${data.error}`;
+            }
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+              messageContainer.classList.remove("show");
+            }, 5000);
+            
+          } catch (error) {
+            messageContainer.classList.add("show");
+            messageContainer.className = "message-container message-error show";
+            messageContainer.innerHTML = `<i class="fas fa-exclamation-circle mr-2"></i>Network error. Please try again.`;
+          } finally {
+            // Restore button state
+            submitBtn.disabled = false;
+            submitBtn.classList.remove("btn-loading");
+            submitBtn.textContent = submitBtn.dataset.originalText || "Send Inquiry";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

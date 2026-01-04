@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Payment Failed - Family BookStore{% endblock %}
+
+{% block content %}
+<div class="payment-success-container" style="max-width: 800px; margin: 40px auto; padding: 20px;">
+
+    <div class="success-header" style="text-align: center; margin-bottom: 30px;">
+        <div class="success-icon" style="font-size: 60px; color: #ef4444; margin-bottom: 20px;">
+            <i class="fas fa-times-circle"></i>
+        </div>
+        <h1 style="color: #ef4444; margin-bottom: 10px;">Payment Failed</h1>
+        <p style="color: #666;">
+            Your payment could not be processed. Please try again.
+        </p>
+        {% if error %}
+            <p style="color: #b91c1c; font-size: 14px; margin-top: 10px;">
+                {{ error }}
+            </p>
+        {% endif %}
+    </div>
+
+    <div class="order-details" style="background: #fef2f2; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #fecaca;">
+        <h2 style="margin-bottom: 15px; color: #b91c1c;">What happened?</h2>
+        <p style="margin: 0 0 10px; color: #4b5563; font-size: 14px;">
+            The transaction was not completed and your order has not been placed.
+        </p>
+        <p style="margin: 0 0 10px; color: #4b5563; font-size: 14px;">
+            If the amount has been deducted from your account, it will be automatically reversed by your bank within a few working days.
+        </p>
+    </div>
+
+    <div class="shipping-info" style="background: #f9fafb; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+        <h2 style="margin-bottom: 15px; color: #333;">Need help?</h2>
+        <p style="margin: 0 0 8px; color: #4b5563; font-size: 14px;">
+            You can contact our support team with your payment reference for assistance.
+        </p>
+        <p style="margin: 0; color: #4b5563; font-size: 14px;">
+            Please keep your bank SMS or email notification handy while contacting support.
+        </p>
+    </div>
+
+    <div class="next-steps" style="background: #fff3e0; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+        <h2 style="margin-bottom: 15px; color: #f57c00;">What you can do</h2>
+        <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 10px;">
+                <i class="fas fa-redo" style="color: #ef4444; margin-right: 8px;"></i>
+                Try the payment again after a few minutes.
+            </li>
+            <li style="margin-bottom: 10px;">
+                <i class="fas fa-credit-card" style="color: #0288d1; margin-right: 8px;"></i>
+                Check that your card / UPI details are correct and have sufficient balance.
+            </li>
+            <li style="margin-bottom: 10px;">
+                <i class="fas fa-phone" style="color: #f57c00; margin-right: 8px;"></i>
+                If the issue continues, contact your bank or our support team.
+            </li>
+        </ul>
+    </div>
+
+    <div class="action-buttons" style="text-align: center; margin-top: 30px;">
+        <!--  NEW: Clear lock and retry button -->
+        <button id="retryPaymentBtn" class="btn" style="background: #e20074; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; margin-right: 10px; border: none; cursor: pointer;">
+            <i class="fas fa-redo mr-2"></i>Try Payment Again
+        </button>
+        <a href="/" class="btn" style="background: #6b7280; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px;">
+            Go to Home
+        </a>
+    </div>
+</div>
+
+<style>
+    .payment-success-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .success-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .success-icon {
+        font-size: 60px;
+        margin-bottom: 20px;
+    }
+
+    .success-header h1 {
+        margin-bottom: 10px;
+        font-size: 1.9rem;
+    }
+
+    .success-header p {
+        color: #666;
+        font-size: 0.98rem;
+    }
+
+    .order-details,
+    .shipping-info,
+    .shiprocket-info,
+    .next-steps {
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .order-details {
+        background: #f9fafb;
+    }
+
+    .shipping-info {
+        background: #f9fafb;
+    }
+
+    .shiprocket-info {
+        background: #e0f2fe;
+        border-left: 4px solid #0288d1;
+    }
+
+    .next-steps {
+        background: #fff3e0;
+    }
+
+    .order-details h2,
+    .shipping-info h2,
+    .shiprocket-info h2,
+    .next-steps h2 {
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+    }
+
+    .next-steps ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .next-steps li {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: flex-start;
+        font-size: 0.95rem;
+        color: #374151;
+    }
+
+    .next-steps li i {
+        margin-right: 8px;
+        margin-top: 2px;
+    }
+
+    .action-buttons {
+        text-align: center;
+        margin-top: 30px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .action-buttons .btn {
+        background: #e20074;
+        color: white;
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 0.95rem;
+        display: inline-block;
+    }
+
+    .action-buttons .btn:nth-child(2) {
+        background: #6b7280;
+    }
+
+    .btn:hover {
+        opacity: 0.9;
+        transition: opacity 0.2s;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+        .action-buttons {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .action-buttons .btn {
+            width: 100%;
+            margin-right: 0 !important;
+        }
+    }
+</style>
+
+<script>
+// NEW: Clear lock and redirect to checkout
+document.getElementById('retryPaymentBtn').addEventListener('click', async function() {
+    const btn = this;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Clearing...';
+    
+    try {
+        const response = await fetch('/api/clear-checkout-lock/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.cookie.match(/csrftoken=([\w-]+)/)?.[1] || '',
+                'Content-Type': 'application/json',
+            },
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            window.location.href = '/checkout/';  // Redirect to retry
+        } else {
+            alert('Failed to clear lock: ' + data.message);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-redo mr-2"></i>Try Payment Again';
+        }
+    } catch (error) {
+        alert('Network error: ' + error);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-redo mr-2"></i>Try Payment Again';
+    }
+});
+</script>
+{% endblock %}
