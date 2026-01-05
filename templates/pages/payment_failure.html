@@ -132,120 +132,116 @@ Family BookStore{% endblock %} {% block extra_head %}
 
 <style>
   .payment-failure-container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 20px;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   }
 
   .failure-header {
-      text-align: center;
-      margin-bottom: 30px;
+    text-align: center;
+    margin-bottom: 30px;
   }
 
   .failure-icon {
-      font-size: 60px;
-      margin-bottom: 20px;
+    font-size: 60px;
+    margin-bottom: 20px;
   }
 
   .failure-header h1 {
-      margin-bottom: 10px;
-      font-size: 1.9rem;
+    margin-bottom: 10px;
+    font-size: 1.9rem;
   }
 
   .failure-header p {
-      color: #666;
-      font-size: 0.98rem;
+    color: #666;
+    font-size: 0.98rem;
   }
 
-  .order-details, .help-info, .next-steps {
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
+  .order-details,
+  .help-info,
+  .next-steps {
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
   }
 
   .order-details {
-      background: #fef2f2;
-      border: 1px solid #fecaca;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
   }
 
   .help-info {
-      background: #f9fafb;
+    background: #f9fafb;
   }
 
   .next-steps {
-      background: #fff3e0;
+    background: #fff3e0;
   }
 
   .next-steps ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
 
   .next-steps li {
-      margin-bottom: 10px;
-      display: flex;
-      align-items: flex-start;
-      font-size: 0.95rem;
-      color: #374151;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    font-size: 0.95rem;
+    color: #374151;
   }
 
   .next-steps li i {
-      margin-right: 8px;
-      margin-top: 2px;
+    margin-right: 8px;
+    margin-top: 2px;
   }
 
   .action-buttons {
-      text-align: center;
-      margin-top: 30px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
+    text-align: center;
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
   }
 
   .btn {
-      background: #e20074;
-      color: white;
-      padding: 12px 24px;
-      text-decoration: none;
-      border-radius: 5px;
-      font-size: 0.95rem;
-      display: inline-block;
-      border: none;
-      cursor: pointer;
+    background: #e20074;
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
   }
 
   .btn:hover {
-      opacity: 0.9;
-      transition: opacity 0.2s;
+    opacity: 0.9;
+    transition: opacity 0.2s;
   }
-
-  /* Prevent back button */
-  window.addEventListener('load', function() {
-      if (window.history && window.history.pushState) {
-          window.history.pushState(null, null, window.location.href);
-          window.onpopstate = function () {
-              window.history.pushState(null, null, window.location.href);
-              window.location.replace('/');
-          };
-      }
-  });
-
-  /* Clear sessions */
-  document.addEventListener("DOMContentLoaded", function () {
-      fetch("/api/clear-payment-session/", {
-          method: "POST",
-          headers: {
-              "X-CSRFToken": document.cookie.match(/csrftoken=([\w-]+)/)?.[1] || '',
-              "Content-Type": "application/json",
-          },
-      }).catch(console.error);
-  });
 </style>
 
 <script>
+  /* Prevent back button */
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+      window.location.reload();
+    }
+  });
+
+  window.addEventListener("load", function () {
+    if (window.history && window.history.pushState) {
+      window.history.pushState(null, null, window.location.href);
+      window.onpopstate = function () {
+        window.history.pushState(null, null, window.location.href);
+        window.location.replace("/");
+      };
+    }
+  });
   // CRITICAL: Clear lock and redirect to checkout
   document
     .getElementById("retryPaymentBtn")
@@ -280,4 +276,5 @@ Family BookStore{% endblock %} {% block extra_head %}
       }
     });
 </script>
+
 {% endblock %}

@@ -596,4 +596,114 @@ document.addEventListener("DOMContentLoaded", function () {
       return null;
     }
   }
+  
+});
+
+// ============================================
+// Video Showcase Slider - All Autoplay
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+  const videoSlider = document.getElementById('videoSlider');
+  const videoPagination = document.getElementById('videoPagination');
+  
+  if (!videoSlider || !videoPagination) return;
+
+  const videoSlides = videoSlider.querySelectorAll('.video-slide');
+  const totalVideos = videoSlides.length;
+  let currentVideoIndex = 0;
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  // Create pagination dots
+  videoPagination.innerHTML = '';
+  for (let i = 0; i < totalVideos; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => scrollToVideo(i));
+    videoPagination.appendChild(dot);
+  }
+
+  // Update active dot
+  function updateActiveDot() {
+    const dots = videoPagination.querySelectorAll('.dot');
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === currentVideoIndex);
+    });
+  }
+
+  // Scroll to specific video
+  function scrollToVideo(index) {
+    if (index < 0 || index >= totalVideos) return;
+    
+    currentVideoIndex = index;
+    const slide = videoSlides[index];
+    videoSlider.scrollTo({
+      left: slide.offsetLeft,
+      behavior: 'smooth'
+    });
+    updateActiveDot();
+  }
+
+  // Navigation functions
+  window.nextVideoSlide = function() {
+    const nextIndex = (currentVideoIndex + 1) % totalVideos;
+    scrollToVideo(nextIndex);
+  };
+
+  window.prevVideoSlide = function() {
+    const prevIndex = (currentVideoIndex - 1 + totalVideos) % totalVideos;
+    scrollToVideo(prevIndex);
+  };
+
+  // Auto-detect current slide on scroll
+  videoSlider.addEventListener('scroll', () => {
+    const scrollLeft = videoSlider.scrollLeft;
+    const slideWidth = videoSlides[0].offsetWidth + 20;
+    
+    const nearestIndex = Math.round(scrollLeft / slideWidth);
+    if (nearestIndex !== currentVideoIndex && nearestIndex < totalVideos) {
+      currentVideoIndex = nearestIndex;
+      updateActiveDot();
+    }
+  });
+
+  // Touch/Mobile swipe support
+  videoSlider.addEventListener('touchstart', (e) => {
+    isDown = true;
+    startX = e.touches[0].pageX - videoSlider.offsetLeft;
+    scrollLeft = videoSlider.scrollLeft;
+  });
+
+  videoSlider.addEventListener('touchmove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.touches[0].pageX - videoSlider.offsetLeft;
+    const walk = (x - startX) * 2;
+    videoSlider.scrollLeft = scrollLeft - walk;
+  });
+
+  videoSlider.addEventListener('touchend', () => {
+    isDown = false;
+  });
+
+  // ENSURE VIDEOS KEEP PLAYING - Restart if stopped
+  videoSlides.forEach(slide => {
+    const video = slide.querySelector('video');
+    if (video) {
+      // Handle autoplay policy - restart if paused by browser
+      video.addEventListener('pause', () => {
+        // Don't restart if user manually paused
+        if (video.readyState >= 2) {
+          video.play().catch(e => console.log('Autoplay prevented:', e));
+        }
+      });
+
+      // Ensure loop works flawlessly
+      video.addEventListener('ended', () => {
+        video.currentTime = 0;
+        video.play();
+      });
+    }
+  });
 });

@@ -114,11 +114,6 @@ document.addEventListener("DOMContentLoaded", function () {
               Est. delivery 3–6 days (courier selected automatically).
             </div>
           </div>
-          <div class="text-right">
-            <div class="font-bold text-lg text-[#e20074]" id="frontendShippingCharge">
-              ₹0.00
-            </div>
-          </div>
         </div>
       </div>
     `;

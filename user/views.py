@@ -3,7 +3,7 @@ import re
 import time
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
-
+from django.views.decorators.cache import never_cache
 from django.conf import settings
 from django.core.cache import cache
 from django.db import transaction, IntegrityError
@@ -329,6 +329,7 @@ def check_checkout_lock(request):
 
 # ==================== CHECKOUT ====================
 
+@never_cache
 def checkout(request):
     """Display checkout page"""
     try:
@@ -624,6 +625,7 @@ def place_cod_order(request):
 
 # ==================== PAYMENT SUCCESS/FAILURE ====================
 
+@never_cache
 @csrf_exempt
 def payment_success(request):
     """
@@ -753,6 +755,7 @@ def _handle_success_page(request):
     except Order.DoesNotExist:
         return redirect('/')
 
+@never_cache
 @csrf_exempt
 def payment_failure(request):
     """Handle payment failure with proper cleanup"""

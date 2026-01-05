@@ -375,6 +375,12 @@
     }
   });
 
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+      window.location.reload();
+    }
+  });
+
   /* Clear sessions on load */
   document.addEventListener("DOMContentLoaded", function () {
     fetch("/api/clear-payment-session/", {
@@ -386,4 +392,5 @@
     }).catch(console.error);
   });
 </script>
+
 {% endblock %}

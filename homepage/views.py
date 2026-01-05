@@ -15,7 +15,12 @@ def home_page(request):
         'business_stock_market_books': Book.objects.filter(category='business_stock_market').order_by('title'),
         'best_sellers_books': Book.objects.filter(category='best_sellers').order_by('title'),
     }
-    return render(request, 'index.html', context)
+    response = render(request, 'index.html', context)
+
+    response["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response["Pragma"] = "no-cache"
+    response["Expires"] = "0"
+    return response
 
 def book_detail(request, slug):
     book = get_object_or_404(Book, slug=slug)
