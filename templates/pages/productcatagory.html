@@ -6,10 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token }}">
     <title>Collections</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css   "
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
     <link rel="stylesheet" href="{% static 'css/productcatagory.css' %}" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
@@ -36,7 +33,6 @@
     <!-- Header -->
     <header>
       <nav class="navbar">
-        <!-- Hamburger Menu -->
         <div class="hamburger" id="hamburger">
           <i class="fa fa-bars"></i>
         </div>
@@ -50,24 +46,6 @@
           <a href="#">About Us</a>
           <a href="#">Return & Replacement</a>
           <a href="#">Contact Us</a>
-          {% comment %} <a href="#">Terms & Conditions</a>
-          <a href="#">Privacy Policy</a> {% endcomment %}
-        </div>
-        {% comment %}
-        <div class="nav-icons">
-          <div class="search-container">
-            <input
-              type="text"
-              class="search-input"
-              placeholder="Search books..."
-              id="searchInput"
-            />
-            <div class="search-btn" id="searchBtn">
-              <i class="fa fa-search"></i>
-            </div>
-            <div id="searchDropdown" class="search-dropdown"></div>
-          </div>
-          {% endcomment %}
         </div>
       </nav>
     </header>
@@ -76,20 +54,14 @@
     <h2 class="heading">Collections</h2>
 
     <section class="collections">
-      {% for category in products_category %}
-      <a
-        href="{% url 'product_category_detail' category.type %}"
-        class="collection-item"
-      >
-        {% if category.image %}
-        <img
-          src="{{ category.image.url }}"
-          alt="{{ category.get_type_display }}"
-        />
+      {% for item in categories_with_slugs %}
+      <a href="/category/{{ item.slug }}/" class="collection-item">
+        {% if item.category.image %}
+        <img src="{{ item.category.image.url }}" alt="{{ item.category.get_type_display }}"/>
         {% else %}
         <div class="image-placeholder"></div>
         {% endif %}
-        <p>{{ category.get_type_display }}</p>
+        <p>{{ item.category.get_type_display }}</p>
       </a>
       {% endfor %}
     </section>
@@ -117,26 +89,15 @@
         </div>
         <div class="footer-section about">
           <h3>About the shop</h3>
-          <p>We’re a family-run bookstore offering the best deals on your
-            favorite titles.</p>
-          <img
-            src="{% static 'images/logo.png' %}"
-            alt="Shop Logo"
-            class="footer-logo"
-          />
+          <p>We’re a family-run bookstore offering the best deals on your favorite titles.</p>
+          <img src="{% static 'images/logo.png' %}" alt="Shop Logo" class="footer-logo"/>
         </div>
       </div>
       <div class="footer-bottom">
         <p>© 2025, Family Book Store</p>
         <div class="payment-icons">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png   "
-            alt="Visa"
-          />
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png   "
-            alt="MasterCard"
-          />
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa"/>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="MasterCard"/>
         </div>
       </div>
     </footer>
