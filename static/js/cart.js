@@ -1,4 +1,4 @@
-// cart.js - FIXED VERSION
+// cart.js - PRODUCTION READY
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOMContentLoaded: Cart initializing...");
 
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
       this.attachEventListeners();
       this.updateCartDisplay();
       
-      // 🔥 FIX: Handle browser back/forward navigation (bfcache)
+      // Handle browser back/forward navigation (bfcache)
       window.addEventListener('pageshow', (event) => {
         if (event.persisted || performance.getEntriesByType("navigation")[0]?.type === 'back_forward') {
           console.log('Page loaded from cache, forcing cart refresh...');
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
       
-      // 🔥 FIX: Refresh cart when page becomes visible again
+      // Refresh cart when page becomes visible again
       document.addEventListener('visibilitychange', () => {
         if (!document.hidden) {
           console.log('Page became visible, refreshing cart...');
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const btn = e.target;
           
-          // 🔥 FIX: Read quantity from page if available (book detail page)
+          // Read quantity from page if available (book detail page)
           const qtyDisplay = document.getElementById("qty-display");
           const quantity = qtyDisplay ? parseInt(qtyDisplay.textContent) || 1 : 1;
           
@@ -74,12 +74,12 @@ document.addEventListener("DOMContentLoaded", () => {
             title: btn.dataset.title,
             price: btn.dataset.price,
             image: btn.dataset.image,
-            quantity: quantity  // 🔥 ADD THIS LINE
+            quantity: quantity
           });
         }
       });
 
-      // 🔥 FIX: Checkout button - Redirect to checkout page (NOT direct payment)
+      // Checkout button - Redirect to checkout page
       const checkoutBtn = document.querySelector(".checkout-btn");
       if (checkoutBtn) {
         checkoutBtn.addEventListener("click", (e) => {
@@ -125,11 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.success) {
           await this.updateCartDisplay();
           this.showNotification("Added to cart!");
-
-          // Auto-open cart sidebar after adding
-          setTimeout(() => {
-            this.openCart();
-          }, 300);
+          setTimeout(() => this.openCart(), 300);
         } else {
           console.error("Add to cart failed:", data.error);
           alert("Failed to add to cart: " + data.error);
@@ -221,7 +217,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await response.json();
         console.log("📦 Cart data received:", data);
 
-        // Support both cart_count and cartcount from backend
         const count = data.cart_count ?? data.cartcount ?? 0;
 
         if (this.cartCountEl) {
@@ -425,20 +420,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     getCSRFToken() {
-      const metaTag = document.querySelector('meta[name="csrf-token"]');
-      if (metaTag) {
-        console.log("CSRF Token from meta tag:", metaTag.content);
-        return metaTag.content;
-      }
-
-      const cookie = document.cookie.match(/csrftoken=([\w-]+)/);
-      if (cookie) {
-        console.log("CSRF Token from cookie:", cookie[1]);
-        return cookie[1];
-      }
-
-      console.warn("⚠️ CSRF token not found in meta tag or cookie!");
-      return "";
+      return document.querySelector('meta[name="csrf-token"]')?.content ||
+             document.cookie.match(/csrftoken=([\w-]+)/)?.[1] || 
+             '';
     }
   }
 

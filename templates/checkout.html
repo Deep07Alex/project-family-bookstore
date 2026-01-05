@@ -17,7 +17,6 @@
     <!-- Header -->
     <header>
       <nav class="navbar">
-        <!-- Hamburger Menu -->
         <div class="hamburger" id="hamburger">
           <i class="fa fa-bars"></i>
         </div>
@@ -31,8 +30,6 @@
           <a href="#">About Us</a>
           <a href="#">Return & Replacement</a>
           <a href="#">Contact Us</a>
-          {% comment %} <a href="#">Terms & Conditions</a>
-          <a href="#">Privacy Policy</a> {% endcomment %}
         </div>
         <div class="nav-icons">
           <div class="search-container">
@@ -59,7 +56,7 @@
 
     <div class="container mx-auto px-4 py-8 max-w-6xl">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Left: Shipping + OTP -->
+        <!-- Left: Shipping -->
         <div class="lg:col-span-2 space-y-6">
           <!-- Progress Indicator -->
           <div class="flex items-center space-x-4 mb-6">
@@ -94,11 +91,10 @@
           <form id="checkoutForm">
             {% csrf_token %}
 
-            <!-- Contact Information + OTP -->
+            <!-- Contact Information - NO OTP -->
             <div class="bg-white rounded-xl shadow-md p-6">
               <h2 class="text-xl font-semibold mb-4 flex items-center">
-                <i class="fas fa-user-circle mr-3 text-[#e20074]"></i>Contact
-                Information
+                <i class="fas fa-user-circle mr-3 text-[#e20074]"></i>Contact Information
               </h2>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -130,40 +126,6 @@
                 </div>
               </div>
 
-              <!-- OTP controls -->
-              <div class="mt-4">
-                <button
-                  type="button"
-                  id="sendOtpBtn"
-                  class="px-4 py-2 text-sm font-semibold border border-[#e20074] text-[#e20074] rounded-lg hover:bg-pink-50"
-                >
-                  Send OTP
-                </button>
-              </div>
-
-              <div id="otpSection" class="mt-3">
-                <label class="block text-sm font-medium text-gray-700 mb-2"
-                  >Enter OTP</label
-                >
-                <div class="flex items-center space-x-3">
-                  <input
-                    type="text"
-                    id="otpInput"
-                    maxlength="6"
-                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#e20074] focus:border-transparent"
-                    placeholder="6-digit OTP"
-                  />
-                  <button
-                    type="button"
-                    id="verifyOtpBtn"
-                    class="px-4 py-2 text-sm font-semibold bg-[#e20074] text-white rounded-lg hover:bg-pink-700"
-                  >
-                    Verify
-                  </button>
-                </div>
-                <p id="otpMessage" class="text-sm mt-2"></p>
-              </div>
-
               <div class="mt-4">
                 <label class="block text-sm font-medium text-gray-700 mb-2"
                   >Mobile Number *</label
@@ -180,14 +142,13 @@
               </div>
             </div>
 
-            <!-- Shipping Address (locked until OTP verified) -->
+            <!-- Shipping Address (unlocked by default) -->
             <div
               id="addressSection"
-              class="bg-white rounded-xl shadow-md p-6 opacity-50 pointer-events-none"
+              class="bg-white rounded-xl shadow-md p-6"
             >
               <h2 class="text-xl font-semibold mb-4 flex items-center">
-                <i class="fas fa-map-marker-alt mr-3 text-[#e20074]"></i
-                >Shipping Address
+                <i class="fas fa-map-marker-alt mr-3 text-[#e20074]"></i>Shipping Address
               </h2>
 
               <div class="space-y-4">
@@ -284,8 +245,7 @@
         <div class="lg:col-span-1">
           <div class="bg-white rounded-xl shadow-md p-6 sticky top-4">
             <h2 class="text-xl font-semibold mb-4 flex items-center">
-              <i class="fas fa-shopping-cart mr-3 text-[#e20074]"></i>Order
-              Summary
+              <i class="fas fa-shopping-cart mr-3 text-[#e20074]"></i>Order Summary
             </h2>
 
             <div id="orderSummary" class="space-y-3 mb-4">
@@ -320,8 +280,7 @@
             <!-- Payment Method options moved here -->
             <div class="mt-4 bg-gray-50 rounded-lg p-4">
               <h3 class="text-base font-semibold mb-3 flex items-center">
-                <i class="fas fa-credit-card mr-2 text-[#e20074]"></i>Payment
-                Method
+                <i class="fas fa-credit-card mr-2 text-[#e20074]"></i>Payment Method
               </h3>
               <div class="space-y-2">
                 <label class="flex items-center space-x-3">
@@ -359,8 +318,7 @@
               class="w-full bg-[#e20074] text-white py-4 rounded-lg font-semibold hover:bg-pink-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors mt-6"
               disabled
             >
-              <i class="fas fa-lock mr-2"></i
-              ><span id="payButtonText">Proceed to Payment</span>
+              <i class="fas fa-lock mr-2"></i><span id="payButtonText">Proceed to Payment</span>
             </button>
 
             <div class="mt-4 text-center">
@@ -411,9 +369,7 @@
         <div class="mb-3">
           <i class="fas fa-spinner fa-spin text-2xl text-[#e20074]"></i>
         </div>
-        <p id="checkoutOverlayText" class="text-sm text-gray-700">
-          Processing...
-        </p>
+        <p id="checkoutOverlayText" class="text-sm text-gray-700">Processing...</p>
       </div>
     </div>
 

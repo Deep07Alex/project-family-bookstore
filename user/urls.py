@@ -12,8 +12,9 @@ urlpatterns = [
     path("cart/clear/", views.clear_cart, name="clear_cart"),
 
     # ============ PHASE 2: Email Verification ============
-    path("api/send-email-otp/", views.send_email_otp, name="send_email_otp"),
-    path("api/verify-email-otp/", views.verify_email_otp, name="verify_email_otp"),
+    # OTP URLs REMOVED
+    # path("api/send-email-otp/", views.send_email_otp, name="send_email_otp"),
+    # path("api/verify-email-otp/", views.verify_email_otp, name="verify_email_otp"),
 
     # ============ PHASE 3: Checkout & Shipping ============
     path("checkout/", views.checkout, name="checkout"),

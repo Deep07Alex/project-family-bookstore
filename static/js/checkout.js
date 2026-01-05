@@ -1,5 +1,4 @@
-// static/js/checkout.js - Email OTP, Shipping & Payment Flow
-
+// checkout.js - PRODUCTION READY
 document.addEventListener("DOMContentLoaded", function () {
   // Check if checkout is locked
   async function checkCheckoutLock() {
@@ -11,14 +10,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const overlay = document.getElementById("checkoutOverlay");
         const overlayText = document.getElementById("checkoutOverlayText");
         if (overlay && overlayText) {
-          overlayText.textContent =
-            "A payment is already in progress. Please complete it or wait a few minutes...";
+          overlayText.textContent = "A payment is already in progress. Please complete it or wait a few minutes...";
           overlay.classList.remove("hidden");
         }
-        // Optionally redirect after a delay
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 5000);
+        setTimeout(() => window.location.href = "/", 5000);
         return true;
       }
     } catch (error) {
@@ -31,12 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // DOM References
   const emailInput = document.getElementById("emailInput");
-  const sendOtpBtn = document.getElementById("sendOtpBtn");
-  const otpSection = document.getElementById("otpSection");
-  const otpInput = document.getElementById("otpInput");
-  const verifyOtpBtn = document.getElementById("verifyOtpBtn");
-  const otpMessage = document.getElementById("otpMessage");
-  const addressSection = document.getElementById("addressSection");
   const pincodeInput = document.getElementById("pincode");
   const shippingOptions = document.getElementById("shippingOptions");
   const shippingLoading = document.getElementById("shippingLoading");
@@ -44,156 +33,41 @@ document.addEventListener("DOMContentLoaded", function () {
   const errorMessage = document.getElementById("errorMessage");
   const proceedToPaymentBtn = document.getElementById("proceedToPaymentBtn");
   const orderSummary = document.getElementById("orderSummary");
-  const paymentRadios = document.querySelectorAll(
-    'input[name="paymentMethod"]'
-  );
+  const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
   const payButtonText = document.getElementById("payButtonText");
   const summaryPaymentMethod = document.getElementById("summaryPaymentMethod");
   const checkoutOverlay = document.getElementById("checkoutOverlay");
   const checkoutOverlayText = document.getElementById("checkoutOverlayText");
 
-  // If we are NOT on the checkout page (elements missing), do nothing
-  if (
-    !emailInput ||
-    !sendOtpBtn ||
-    !otpSection ||
-    !pincodeInput ||
-    !orderSummary
-  ) {
+  if (!emailInput || !pincodeInput || !orderSummary) {
     return;
   }
 
-  let selectedShippingRate = null;
-  let isEmailVerified = false;
   let selectedPaymentMethod = "payu";
 
   // Helper: label for summary
   function getPaymentMethodLabel(method) {
-    if (method === "cod") {
-      return "Cash on Delivery";
-    }
-    return "Online Payment (PayU)";
+    return method === "cod" ? "Cash on Delivery" : "Online Payment (PayU)";
   }
 
   // Listen for payment method changes
   paymentRadios.forEach((radio) => {
     radio.addEventListener("change", function () {
       if (this.checked) {
-        selectedPaymentMethod = this.value; // "payu" or "cod"
-        summaryPaymentMethod.textContent = getPaymentMethodLabel(
-          selectedPaymentMethod
-        );
+        selectedPaymentMethod = this.value;
+        summaryPaymentMethod.textContent = getPaymentMethodLabel(selectedPaymentMethod);
         updateTotalAmount();
       }
     });
   });
 
-  // =========================================================================
-  // EMAIL VERIFICATION
-  // =========================================================================
+  // Load order summary immediately
+  loadOrderSummary();
 
-  sendOtpBtn.addEventListener("click", async function () {
-    const email = emailInput.value.trim();
-
-    if (!email || !email.includes("@")) {
-      alert("Please enter a valid email address");
-      return;
-    }
-
-    sendOtpBtn.disabled = true;
-    sendOtpBtn.textContent = "Sending...";
-
-    try {
-      const response = await fetch("/api/send-email-otp/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": getCSRFToken(),
-        },
-        body: JSON.stringify({ email: email }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        otpSection.classList.remove("hidden");
-        otpMessage.textContent = "OTP sent to your email!";
-        otpMessage.className = "text-sm mt-2 text-green-600";
-        otpInput.focus();
-      } else {
-        otpMessage.textContent = data.error || "Failed to send OTP";
-        otpMessage.className = "text-sm mt-2 text-red-600";
-      }
-    } catch (error) {
-      otpMessage.textContent = "Network error. Try again.";
-      otpMessage.className = "text-sm mt-2 text-red-600";
-    } finally {
-      sendOtpBtn.disabled = false;
-      sendOtpBtn.textContent = "Send OTP";
-    }
-  });
-
-  verifyOtpBtn.addEventListener("click", async function () {
-    const email = emailInput.value.trim();
-    const otp = otpInput.value.trim();
-
-    if (otp.length !== 6) {
-      otpMessage.textContent = "Please enter 6-digit OTP";
-      otpMessage.className = "text-sm mt-2 text-red-600";
-      return;
-    }
-
-    verifyOtpBtn.disabled = true;
-    verifyOtpBtn.textContent = "Verifying...";
-
-    try {
-      const response = await fetch("/api/verify-email-otp/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": getCSRFToken(),
-        },
-        body: JSON.stringify({ email: email, otp: otp }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        isEmailVerified = true;
-        otpMessage.textContent = "✓ Email verified successfully!";
-        otpMessage.className = "text-sm mt-2 text-green-600";
-
-        // Unlock address section
-        addressSection.classList.remove("opacity-50", "pointer-events-none");
-
-        // Disable email field and OTP section
-        emailInput.disabled = true;
-        sendOtpBtn.disabled = true;
-        otpInput.disabled = true;
-        verifyOtpBtn.disabled = true;
-
-        // Load order summary
-        loadOrderSummary();
-      } else {
-        otpMessage.textContent = data.error || "Invalid OTP";
-        otpMessage.className = "text-sm mt-2 text-red-600";
-      }
-    } catch (error) {
-      otpMessage.textContent = "Verification failed. Try again.";
-      otpMessage.className = "text-sm mt-2 text-red-600";
-    } finally {
-      verifyOtpBtn.disabled = false;
-      verifyOtpBtn.textContent = "Verify";
-    }
-  });
-
-  // =========================================================================
-  // SHIPPING CALCULATION
-  // =========================================================================
-
+  // Pincode blur event for shipping calculation
   pincodeInput.addEventListener("blur", function () {
     const pincode = this.value.trim();
-    if (pincode.length === 6 && isEmailVerified) {
+    if (pincode.length === 6) {
       calculateShipping(pincode);
     }
   });
@@ -230,9 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function displayShippingOptions(rates) {
-    // Always show a single standard method; do NOT show courier names
     shippingError.classList.add("hidden");
-
     shippingOptions.innerHTML = `
       <div class="p-4 border-2 border-gray-200 rounded-lg bg-pink-50">
         <div class="flex justify-between items-start">
@@ -250,8 +122,6 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       </div>
     `;
-
-    selectedShippingRate = null;
     proceedToPaymentBtn.disabled = false;
     updateTotalAmount();
   }
@@ -259,23 +129,16 @@ document.addEventListener("DOMContentLoaded", function () {
   function showShippingError(message) {
     shippingError.classList.remove("hidden");
     errorMessage.textContent = message;
-    // Still allow proceeding; backend will finally validate shipping
     proceedToPaymentBtn.disabled = false;
     updateTotalAmount();
   }
 
-  // Compute shipping for display only, based on subtotal and payment method
   function getDisplayShipping(subtotal, paymentMethod) {
-    if (subtotal >= 499) {
-      if (paymentMethod === "cod") {
-        return 49;
-      }
-      return 0;
+    const subtotalNum = parseFloat(subtotal);
+    if (subtotalNum >= 499) {
+      return paymentMethod === "cod" ? 49 : 0;
     } else {
-      if (paymentMethod === "cod") {
-        return 89;
-      }
-      return 40;
+      return paymentMethod === "cod" ? 89 : 40;
     }
   }
 
@@ -300,15 +163,10 @@ document.addEventListener("DOMContentLoaded", function () {
       payButtonText.textContent = `Pay ₹${total.toFixed(2)} with PayU`;
     }
 
-    summaryPaymentMethod.textContent = getPaymentMethodLabel(
-      selectedPaymentMethod
-    );
+    summaryPaymentMethod.textContent = getPaymentMethodLabel(selectedPaymentMethod);
   }
 
-  // =========================================================================
-  // ORDER SUMMARY
-  // =========================================================================
-
+  // Order Summary
   function loadOrderSummary() {
     fetch("/cart/items/")
       .then((response) => response.json())
@@ -381,7 +239,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     summaryEl.innerHTML = html;
 
-    // Update pricing (subtotal already includes add-ons from backend)
     const subtotal = parseFloat(data.total) || 0;
     const discount = parseFloat(data.discount) || 0;
     const shippingCost = getDisplayShipping(subtotal, selectedPaymentMethod);
@@ -394,43 +251,38 @@ document.addEventListener("DOMContentLoaded", function () {
     totalEl.textContent = `₹${total.toFixed(2)}`;
   }
 
-  // =========================================================================
-  // PROCEED TO PAYMENT
-  // =========================================================================
-
+  // Proceed to Payment
   proceedToPaymentBtn.addEventListener("click", async function () {
-    if (!isEmailVerified) {
-      alert("Please verify your email first");
-      return;
-    }
-
     const formData = {
       fullname: document.getElementById("fullname").value,
       phone: document.getElementById("phone").value,
+      email: document.getElementById("emailInput").value,
       address: document.getElementById("address").value,
       city: document.getElementById("city").value,
       state: document.getElementById("state").value,
       pincode: document.getElementById("pincode").value,
       delivery: "Standard (3-6 days)",
       payment_method: selectedPaymentMethod || "payu",
-      shipping_cost: 0,
-      couriername: "",
-      estimateddays: 0,
     };
 
-    const requiredFields = [
-      "fullname",
-      "phone",
-      "address",
-      "city",
-      "state",
-      "pincode",
-    ];
+    const requiredFields = ["fullname", "phone", "email", "address", "city", "state", "pincode"];
     for (let field of requiredFields) {
       if (!formData[field]) {
         alert(`Please fill ${field} field`);
         return;
       }
+    }
+
+    // Validate phone and pincode client-side (server also validates)
+    const phonePattern = /^[6-9]\d{9}$/;
+    if (!phonePattern.test(formData.phone)) {
+      alert("Please enter a valid 10-digit mobile number");
+      return;
+    }
+
+    if (formData.pincode.length !== 6 || !/^\d+$/.test(formData.pincode)) {
+      alert("Please enter a valid 6-digit pincode");
+      return;
     }
 
     proceedToPaymentBtn.disabled = true;
@@ -444,7 +296,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       if (selectedPaymentMethod === "cod") {
-        // COD: place order directly
         const response = await fetch("/api/place-cod-order/", {
           method: "POST",
           headers: {
@@ -465,7 +316,6 @@ document.addEventListener("DOMContentLoaded", function () {
           updateTotalAmount();
         }
       } else {
-        // PayU: send to gateway
         const response = await fetch("/api/initiate-payment/", {
           method: "POST",
           headers: {
@@ -508,10 +358,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // =========================================================================
-  // UTILITY FUNCTIONS
-  // =========================================================================
-
+  // Utility Functions
   function showOverlay(message) {
     if (checkoutOverlay && checkoutOverlayText) {
       checkoutOverlayText.textContent = message;
@@ -526,8 +373,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function getCSRFToken() {
-    const token = document.cookie.match(/csrftoken=([\w-]+)/)?.[1] || "";
-    return token;
+    return document.querySelector('meta[name="csrf-token"]')?.content ||
+           document.cookie.match(/csrftoken=([\w-]+)/)?.[1] || 
+           '';
   }
 
   // Load initial data

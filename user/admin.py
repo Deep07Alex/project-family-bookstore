@@ -65,7 +65,6 @@ class OrderAdmin(admin.ModelAdmin):
             "fields": (
                 "full_name",
                 "email",
-                "verified_email",
                 "phone_number",
             )
         }),

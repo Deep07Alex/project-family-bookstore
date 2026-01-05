@@ -36,7 +36,6 @@ Payment Method: {order.payment_method}
 Name: {order.full_name}
 Phone: {order.phone_number}
 Email: {order.email}
-Verified Email: {order.verified_email}
 
 📍 SHIPPING ADDRESS:
 {order.address}
